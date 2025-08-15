@@ -6,10 +6,29 @@ import registerImage from "@/public/images/reg-image.png";
 import Link from "next/link";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useForm } from "react-hook-form";
+import { registerSchema, type RegisterSchema } from "@/utils/Validator";
+import { toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onSubmit = (data: RegisterSchema) => {
+    console.log("Form Data:", data);
+    toast.success("Registration successful!");
+    reset();
+  };
 
   return (
     <>
@@ -20,17 +39,18 @@ export default function Home() {
 
       {/* Main content */}
       <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-50">
-        {/* Left image (hidden on small screens) */}
-        <div className="hidden md:flex w-1/2 justify-center p-8">
+        {/* Left image */}
+        <div className="hidden md:flex w-1/2 justify-center p-8 ">
           <Image
             src={registerImage}
             alt="Hire purchase register image"
-            className="rounded-lg shadow-lg object-cover"
+            className="rounded-lg shadow-lg object-contain max-w-full h-auto"
+            priority
           />
         </div>
 
         {/* Right form section */}
-        <div className="flex w-full md:w-1/2 justify-center p-4 md:p-8">
+        <div className="flex w-full md:w-1/2 justify-center p-4 md:p-8 mt-8">
           <div className="bg-white shadow-xl rounded-xl p-6 md:p-8 w-full max-w-md">
             {/* Already have account */}
             <p className="text-center text-gray-500 mb-4 text-sm">
@@ -49,28 +69,59 @@ export default function Home() {
             </h2>
 
             {/* Form */}
-            <form action="" className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              {/* Full Name */}
               <input
                 type="text"
                 placeholder="Full Name"
+                {...register("fullname")}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
+              {errors.fullname && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.fullname.message}
+                </p>
+              )}
+
+              {/* Email */}
               <input
                 type="email"
                 placeholder="Email"
+                {...register("email")}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+
+              {/* Phone */}
               <input
                 type="text"
                 placeholder="E.g. 0803000000123"
+                {...register("phone")}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
+              {errors.phone && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.phone.message}
+                </p>
+              )}
+
+              {/* Password */}
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
+                  {...register("password")}
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -85,13 +136,19 @@ export default function Home() {
                 character
               </p>
 
-              {/* Re-enter password field with toggle */}
+              {/* Confirm Password */}
               <div className="relative">
                 <input
                   type={showRePassword ? "text" : "password"}
                   placeholder="Re-enter Password"
+                  {...register("password_confirm")}
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
                 />
+                {errors.password_confirm && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.password_confirm.message}
+                  </p>
+                )}
                 <button
                   type="button"
                   onClick={() => setShowRePassword(!showRePassword)}
@@ -104,12 +161,15 @@ export default function Home() {
                   )}
                 </button>
               </div>
+
+              {/* Referral Code */}
               <input
                 type="text"
                 placeholder="Referral Code (optional)"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
 
+              {/* Submit */}
               <button
                 type="submit"
                 className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition cursor-pointer"

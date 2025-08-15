@@ -1,7 +1,30 @@
+"use client";
+
 import Image from "next/image";
 import logo from "@/public/images/hire-purchase-logo.png";
+// import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema, RegisterSchema } from "@/utils/Validator";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
 
 export default function ForgotPassword() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    watch,
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onSubmit = (data: RegisterSchema) => {
+    console.log("Form Data:", data);
+    toast.success("Email sent successfully!");
+    reset();
+  };
+
   return (
     <>
       {/* Top navbar */}
@@ -22,7 +45,7 @@ export default function ForgotPassword() {
           </p>
 
           {/* Form */}
-          <form className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
               <label className="block font-dm-sans font-light text-black text-sm mb-1">
                 Email Address
@@ -30,8 +53,14 @@ export default function ForgotPassword() {
               <input
                 type="email"
                 placeholder="Enter your email"
+                {...register("email")}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             <button

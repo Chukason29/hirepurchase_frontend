@@ -5,9 +5,29 @@ import Link from "next/link";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import registerImage from "@/public/images/reg-image.png";
+import { useForm } from "react-hook-form";
+import { registerSchema, type RegisterSchema } from "@/utils/Validator";
+import { toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    watch,
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onSubmit = (data: RegisterSchema) => {
+    console.log("Form Data:", data);
+    toast.success("Login successful!");
+    reset();
+  };
 
   return (
     <>
@@ -44,21 +64,34 @@ export default function Login() {
             </h2>
 
             {/* Form */}
-            <form action="" className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Email */}
               <input
                 type="email"
                 placeholder="Email"
+                {...register("email")}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
               />
+
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.email.message}
+                </p>
+              )}
 
               {/* Password with eye toggle */}
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
+                  {...register("password")}
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
