@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { registerSchema, type RegisterSchema } from "@/utils/Validator";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { registerUser } from "@/services/auth.service";
 
 export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,15 +20,21 @@ export default function Home() {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterSchema) => {
-    console.log("Form Data:", data);
-    toast.success("Registration successful!");
-    reset();
+  const onSubmit = async (data: any) => {
+    console.log("Submitting:", data);
+    try {
+      await registerUser(data);
+      toast.success("Registration successful!");
+      reset();
+    } catch (error: any) {
+      toast(error.message);
+      console.error(error);
+    }
   };
 
   return (
@@ -74,12 +81,12 @@ export default function Home() {
               <input
                 type="text"
                 placeholder="Full Name"
-                {...register("fullname")}
+                {...register("name")}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
-              {errors.fullname && (
+              {errors.name && (
                 <p className="text-red-500 text-xs mt-1">
-                  {errors.fullname.message}
+                  {errors.name.message}
                 </p>
               )}
 
@@ -171,8 +178,11 @@ export default function Home() {
 
               {/* Submit */}
               <button
+                disabled={!isValid}
                 type="submit"
-                className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition cursor-pointer"
+                className={`w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
+                  !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }`}
               >
                 Sign Up
               </button>
