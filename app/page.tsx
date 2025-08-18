@@ -11,6 +11,7 @@ import { registerSchema, type RegisterSchema } from "@/utils/Validator";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,12 +26,14 @@ export default function Home() {
     resolver: zodResolver(registerSchema),
   });
 
+  const router = useRouter()
+
   const onSubmit = async (data: any) => {
     console.log("Submitting:", data);
     try {
       await registerUser(data);
-      toast.success("Registration successful!");
-      reset();
+      // toast.success("Registration successful!");
+      router.push('/otp');
     } catch (error: any) {
       toast(error.message);
       console.error(error);

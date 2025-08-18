@@ -6,9 +6,10 @@ import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import registerImage from "@/public/images/reg-image.png";
 import { useForm } from "react-hook-form";
-import { registerSchema, type RegisterSchema } from "@/utils/Validator";
+import { loginSchema, type LoginSchema } from "@/utils/Validator";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loginUser } from "@/services/auth.service";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,16 +18,22 @@ export default function Login() {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
-  } = useForm<RegisterSchema>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: RegisterSchema) => {
-    console.log("Form Data:", data);
-    toast.success("Login successful!");
-    reset();
+  const onSubmit = async (data: any) => {
+    console.log("Submitting:", data);
+    try {
+      await loginUser(data);
+      // toast.success("Login successful!");
+      reset();
+    } catch (error: any) {
+      toast(error.message);
+      console.error(error);
+    }
   };
 
   return (
@@ -114,7 +121,10 @@ export default function Login() {
               {/* Login button */}
               <button
                 type="submit"
-                className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition cursor-pointer"
+                disabled={!isValid}
+                className={`w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
+                  !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }`}
               >
                 Login
               </button>

@@ -4,9 +4,11 @@ import Image from "next/image";
 import logo from "@/public/images/hire-purchase-logo.png";
 // import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema, RegisterSchema } from "@/utils/Validator";
+import { forgotPasswordSchema, ForgotPasswordSchema } from "@/utils/Validator";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
+import { forgotPassword } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
 
 export default function ForgotPassword() {
   const {
@@ -15,14 +17,22 @@ export default function ForgotPassword() {
     reset,
     formState: { errors },
     watch,
-  } = useForm<RegisterSchema>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<ForgotPasswordSchema>({
+    resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = (data: RegisterSchema) => {
-    console.log("Form Data:", data);
-    toast.success("Email sent successfully!");
-    reset();
+  const router = useRouter();
+
+  const onSubmit = async (data: any) => {
+    console.log("Submitting:", data);
+    try {
+      await forgotPassword(data);
+      // toast.success("Registration successful!");
+      router.push("/otp");
+    } catch (error: any) {
+      toast(error.message);
+      console.error(error);
+    }
   };
 
   return (
