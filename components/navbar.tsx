@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import Image from "next/image";
-import logo from "@/public/images/hire-purchase-logo.png";
+import logo from "@/images/hire-purchase-logo.png";
 
 export default function Navbar() {
   return (

@@ -1,10 +1,10 @@
 "use client";
-import logo from "@/public/images/hire-purchase-logo.png";
+import logo from "@/images/hire-purchase-logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import registerImage from "@/public/images/reg-image.png";
+import registerImage from "@/images/reg-image.png";
 import { useForm } from "react-hook-form";
 import { loginSchema, type LoginSchema } from "@/utils/Validator";
 import { toast } from "react-toastify";

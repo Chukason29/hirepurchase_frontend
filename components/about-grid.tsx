@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowBigRightDashIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import image from "@/public/images/invest.webp";
-import returnImage from "@/public/images/return.webp";
+import image from "@/images/invest.webp";
+import returnImage from "@/images/return.webp";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },

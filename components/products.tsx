@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowBigRightDashIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import bus from "@/public/images/bus.webp";
-import billboard from "@/public/images/billboard.png";
+import bus from "@/images/bus.webp";
+import billboard from "@/images/billboard.png";
 
 export function Products() {
   const cardVariants = {

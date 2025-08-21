@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import holder from "@/public/images/holder.webp";
+import holder from "@/images/holder.webp";
 import { Button } from "@/components/ui/button";
 import { PiAppleLogoBold } from "react-icons/pi";
 import { IoLogoGooglePlaystore } from "react-icons/io5";
