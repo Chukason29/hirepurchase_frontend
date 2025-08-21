@@ -69,7 +69,7 @@ export function AboutGrid() {
           </h3>
           <p className="text-gray-700 leading-relaxed">
             No wahala, no grammar. Just simple investing — start with as low as
-            ₦1,000 and watch your money grow, even if you're new to the game.
+            ₦1,000 and watch your money grow, even if you&apos;re new to the game.
           </p>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Link

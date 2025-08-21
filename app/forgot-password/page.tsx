@@ -3,7 +3,10 @@
 import Image from "next/image";
 import logo from "@/images/hire-purchase-logo.png";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordSchema, ForgotPasswordSchema } from "@/utils/Validator";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordSchema,
+} from "@/utils/Validator";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { forgotPassword } from "@/services/auth.service";
@@ -13,23 +16,22 @@ export default function ForgotPassword() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
-    watch,
   } = useForm<ForgotPasswordSchema>({
     resolver: zodResolver(forgotPasswordSchema),
+    mode: "onChange",
   });
 
   const router = useRouter();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ForgotPasswordSchema) => {
     console.log("Submitting:", data);
     try {
-      await forgotPassword(data);
-      // toast.success("Registration successful!");
+      await forgotPassword(data.email);
+      toast.success("Verification code sent to your email!");
       router.push("/otp");
-    } catch (error: any) {
-      toast(error.message);
+    } catch (error) {
+      toast.error((error as { message?: string })?.message || "Something went wrong");
       console.error(error);
     }
   };
@@ -56,10 +58,14 @@ export default function ForgotPassword() {
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
-              <label className="block font-dm-sans font-light text-black text-sm mb-1">
+              <label
+                htmlFor="email"
+                className="block font-dm-sans font-light text-black text-sm mb-1"
+              >
                 Email Address
               </label>
               <input
+                id="email"
                 type="email"
                 placeholder="Enter your email"
                 {...register("email")}

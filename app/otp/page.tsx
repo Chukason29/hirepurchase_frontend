@@ -3,38 +3,34 @@
 import Image from "next/image";
 import logo from "@/images/hire-purchase-logo.png";
 import registerImage from "@/images/reg-image.png";
-import { useState } from "react";
-import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { otpSchema, type OtpSchema } from "@/utils/Validator";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {  verifyOtp } from "@/services/auth.service";
+import { verifyOtp } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 
-export default function verifyEmail() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showRePassword, setShowRePassword] = useState(false);
-
+export default function VerifyEmail() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isValid },
   } = useForm<OtpSchema>({
     resolver: zodResolver(otpSchema),
+    mode: "onChange",
   });
 
   const router = useRouter();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: OtpSchema) => {
     console.log("Submitting:", data);
     try {
-      await verifyOtp(data);
-    //   toast.success("Otp v successful!");
+      await verifyOtp(data.otp);
+      console.log("OTP verified successfully");
+      toast.success("OTP verified successfully!");
       router.push("/login");
-    } catch (error: any) {
-      toast(error.message);
+    } catch (error) {
+      toast.error((error as { message?: string })?.message || "Failed to verify OTP");
       console.error(error);
     }
   };
@@ -49,7 +45,7 @@ export default function verifyEmail() {
       {/* Main content */}
       <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-50">
         {/* Left image */}
-        <div className="hidden md:flex w-1/2 justify-center p-8 ">
+        <div className="hidden md:flex w-1/2 justify-center p-8">
           <Image
             src={registerImage}
             alt="Hire purchase register image"
@@ -62,24 +58,32 @@ export default function verifyEmail() {
         <div className="flex w-full md:w-1/2 justify-center p-4 md:p-8 mt-8">
           <div className="bg-white shadow-xl rounded-xl p-6 md:p-8 w-full max-w-md">
             {/* Title */}
-            <h2 className="text-lg md:text-lg font-extrabold text-gray-900 mb-6 text-center">
+            <h2 className="text-lg md:text-xl font-extrabold text-gray-900 mb-6 text-center">
               Enter OTP to Verify Email
             </h2>
 
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* OTP*/}
-              <input
-                type="text"
-                placeholder="Enter OTP"
-                {...register("otp")}
-                className="w-full px-4 py-2 border text-center rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-              />
-              {errors.otp && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.otp.message}
-                </p>
-              )}
+              <div>
+                <label
+                  htmlFor="otp"
+                  className="block font-dm-sans font-light text-black text-sm mb-1 text-center"
+                >
+                  One-Time Password
+                </label>
+                <input
+                  id="otp"
+                  type="text"
+                  placeholder="Enter OTP"
+                  {...register("otp")}
+                  className="w-full px-4 py-2 border text-center rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+                />
+                {errors.otp && (
+                  <p className="text-red-500 text-xs mt-1 text-center">
+                    {errors.otp.message}
+                  </p>
+                )}
+              </div>
 
               {/* Submit */}
               <button

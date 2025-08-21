@@ -10,26 +10,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { forgotPasswordOtp } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 
-export default function verifyEmail() {
+export default function VerifyEmail() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isValid },
   } = useForm<OtpSchema>({
     resolver: zodResolver(otpSchema),
+    mode: "onChange",
   });
 
   const router = useRouter();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: OtpSchema) => {
     console.log("Submitting:", data);
     try {
-      await forgotPasswordOtp(data);
-      //   toast.success("Otp v successful!");
+      await forgotPasswordOtp(data.otp);
+      toast.success("OTP verification successful!");
       router.push("/login");
-    } catch (error: any) {
-      toast(error.message);
+    } catch (error) {
+      toast.error((error as { message?: string })?.message || "Something went wrong");
       console.error(error);
     }
   };
@@ -44,7 +44,7 @@ export default function verifyEmail() {
       {/* Main content */}
       <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-50">
         {/* Left image */}
-        <div className="hidden md:flex w-1/2 justify-center p-8 ">
+        <div className="hidden md:flex w-1/2 justify-center p-8">
           <Image
             src={registerImage}
             alt="Hire purchase register image"
@@ -63,11 +63,12 @@ export default function verifyEmail() {
 
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* OTP*/}
+              {/* OTP */}
               <input
                 type="text"
                 placeholder="Enter OTP"
                 {...register("otp")}
+                name="otp"
                 className="w-full px-4 py-2 border text-center rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
               {errors.otp && (

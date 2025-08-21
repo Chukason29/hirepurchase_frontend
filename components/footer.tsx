@@ -71,7 +71,7 @@ export function Footer() {
             © Hire Purchase {new Date().getFullYear()}
           </p>
           <div className="flex flex-wrap justify-center md:justify-end gap-4 text-sm">
-            {socialLinks.map((social, index) => (
+            {socialLinks.map((social) => (
               <motion.div
                 key={social.name}
                 whileHover={{ scale: 1.1, color: "#1d4ed8" }}

@@ -1,4 +1,5 @@
 "use client";
+
 import logo from "@/images/hire-purchase-logo.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,30 +20,32 @@ export default function Login() {
     handleSubmit,
     reset,
     formState: { errors, isValid },
-    watch,
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
+    mode: "onChange",
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: LoginSchema) => {
     console.log("Submitting:", data);
     try {
       await loginUser(data);
-      // toast.success("Login successful!");
+      toast.success("Login successful!");
       reset();
-    } catch (error: any) {
-      toast(error.message);
+    } catch (error) {
+      toast.error((error as { message?: string })?.message || "Login failed");
       console.error(error);
     }
   };
 
   return (
     <>
+      {/* Logo header */}
       <div className="flex items-center justify-end p-4 bg-white shadow-sm sticky top-0 z-50">
         <Image src={logo} alt="Hire purchase logo" height={30} />
       </div>
+
       <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-50 px-4">
-        {/* Left image (hidden on small screens) */}
+        {/* Left image */}
         <div className="hidden md:flex w-1/2 justify-center p-8">
           <Image
             src={registerImage}
@@ -73,42 +76,63 @@ export default function Login() {
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Email */}
-              <input
-                type="email"
-                placeholder="Email"
-                {...register("email")}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-              />
-
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.email.message}
-                </p>
-              )}
-
-              {/* Password with eye toggle */}
-              <div className="relative">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Email
+                </label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  {...register("password")}
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  {...register("email")}
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
-                {errors.password && (
+                {errors.email && (
                   <p className="text-red-500 text-xs mt-1">
-                    {errors.password.message}
+                    {errors.email.message}
                   </p>
                 )}
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                >
-                  {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
-                </button>
               </div>
 
-              {/* Forgot password link aligned right */}
+              {/* Password with eye toggle */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    {...register("password")}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  />
+                  {errors.password && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? (
+                      <FiEyeOff size={20} />
+                    ) : (
+                      <FiEye size={20} />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Forgot password link */}
               <div className="flex justify-end">
                 <Link
                   href="/forgot-password"

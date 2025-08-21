@@ -13,29 +13,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 
-export default function registerPage() {
+export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isValid },
   } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
+    mode: "onChange",
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: RegisterSchema) => {
     console.log("Submitting:", data);
     try {
       await registerUser(data);
-      // toast.success("Registration successful!");
-      router.push('/otp');
-    } catch (error: any) {
-      toast(error.message);
+      toast.success("Registration successful!");
+      router.push("/otp");
+    } catch (error) {
+      toast.error((error as { message?: string })?.message || "Something went wrong");
       console.error(error);
     }
   };
@@ -50,7 +50,7 @@ export default function registerPage() {
       {/* Main content */}
       <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-50">
         {/* Left image */}
-        <div className="hidden md:flex w-1/2 justify-center p-8 ">
+        <div className="hidden md:flex w-1/2 justify-center p-8">
           <Image
             src={registerImage}
             alt="Hire purchase register image"
