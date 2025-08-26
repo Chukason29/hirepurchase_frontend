@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import punch from "@/images/punch.svg";
-import nl from "@/images/nl.webp";
-import pulse from "@/images/pulse.svg";
-import vanguard from "@/images/vanguard.svg";
-import tp from "@/images/tp.svg";
+import punch from "@/public/images/punch.svg";
+import nl from "@/public/images/nl.webp";
+import pulse from "@/public/images/pulse.svg";
+import vanguard from "@/public/images/vanguard.svg";
+import tp from "@/public/images/tp.svg";
 
 const logos = [
   { src: punch, alt: "Punch Logo" },

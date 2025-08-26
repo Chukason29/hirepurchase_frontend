@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import Image from "next/image";
-import logo from "@/images/hire-purchase-logo.png";
+import logo from "@/public/images/hire-purchase-logo.png";
 
 export default function Navbar() {
   return (
@@ -37,7 +37,7 @@ export default function Navbar() {
         {/* Contact Button - Right */}
         <div className="hidden md:flex justify-end flex-shrink-0">
           <Link
-            href="/register"
+            href="https://invest.hirepurchase.ng"
             className="p-3 bg-gray-700 text-white rounded-lg hover:bg-black"
           >
             Get Started
@@ -65,7 +65,10 @@ export default function Navbar() {
                   Investments
                 </Link>
 
-                <Link href="/register" className="hover:text-gray-700">
+                <Link
+                  href="https://invest.hirepurchase.ng"
+                  className="hover:text-gray-700"
+                >
                   Get Started
                 </Link>
               </div>

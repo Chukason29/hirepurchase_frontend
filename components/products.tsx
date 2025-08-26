@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowBigRightDashIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import bus from "@/images/bus.webp";
-import billboard from "@/images/billboard.png";
+import bus from "@/public/images/bus.webp";
+import billboard from "@/public/images/billboard.png";
 
 export function Products() {
   const cardVariants = {
@@ -39,7 +39,7 @@ export function Products() {
             </p>
             <div className="flex items-center gap-2 mt-auto">
               <Link
-                href="/register"
+                href="https://invest.hirepurchase.ng"
                 className="font-bold text-lg text-[#ace8e4] hover:underline"
               >
                 Get Started
@@ -70,7 +70,7 @@ export function Products() {
             </p>
             <div className="flex items-center gap-2 mt-auto">
               <Link
-                href="/register"
+                href="https://invest.hirepurchase.ng"
                 className="font-bold text-lg text-purple-300 hover:underline"
               >
                 Get Started

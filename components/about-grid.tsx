@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowBigRightDashIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import image from "@/images/invest.webp";
-import returnImage from "@/images/return.webp";
+import image from "@/public/images/invest.webp";
+import returnImage from "@/public/images/return.webp";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -39,7 +39,7 @@ export function AboutGrid() {
           </p>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Link
-              href="/register"
+              href="https://invest.hirepurchase.ng"
               className="font-bold text-lg text-purple-900 hover:underline"
             >
               Get Started
@@ -69,11 +69,12 @@ export function AboutGrid() {
           </h3>
           <p className="text-gray-700 leading-relaxed">
             No wahala, no grammar. Just simple investing — start with as low as
-            ₦1,000 and watch your money grow, even if you&apos;re new to the game.
+            ₦1,000 and watch your money grow, even if you&apos;re new to the
+            game.
           </p>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Link
-              href="/register"
+              href="https://invest.hirepurchase.ng"
               className="font-bold text-lg text-purple-900 hover:underline"
             >
               Get Started

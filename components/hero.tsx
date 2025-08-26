@@ -44,8 +44,8 @@ export function Hero() {
 
         {/* CTA Button */}
         <div className="mt-8">
-          <Link href="/register">
-            <Button className="bg-purple-600 font-bold text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-2xl text-white shadow-lg hover:bg-purple-700 hover:shadow-xl transition-all duration-200 ease-in-out">
+          <Link href="https://invest.hirepurchase.ng">
+            <Button className="bg-purple-600 font-bold text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-2xl text-white shadow-lg hover:bg-purple-700 hover:shadow-xl transition-all duration-200 ease-in-out cursor-pointer">
               Get Started
             </Button>
           </Link>
