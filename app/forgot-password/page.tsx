@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import logo from "@/images/hire-purchase-logo.png";
+import logo from "@/public/images/hire-purchase-logo.png";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   forgotPasswordSchema,

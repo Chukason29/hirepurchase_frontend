@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import logo from "@/images/hire-purchase-logo.png";
-import registerImage from "@/images/reg-image.png";
+import logo from "@/public/images/hire-purchase-logo.png";
+import registerImage from "@/public/images/reg-image.png";
 import { useForm } from "react-hook-form";
 import { otpSchema, type OtpSchema } from "@/utils/Validator";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordOtp } from "@/services/auth.service";
+import { verifyOtp } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 
 export default function VerifyEmail() {
@@ -25,11 +25,12 @@ export default function VerifyEmail() {
   const onSubmit = async (data: OtpSchema) => {
     console.log("Submitting:", data);
     try {
-      await forgotPasswordOtp(data.otp);
-      toast.success("OTP verification successful!");
+      await verifyOtp(data.otp);
+      console.log("OTP verified successfully");
+      toast.success("OTP verified successfully!");
       router.push("/login");
     } catch (error) {
-      toast.error((error as { message?: string })?.message || "Something went wrong");
+      toast.error((error as { message?: string })?.message || "Failed to verify OTP");
       console.error(error);
     }
   };
@@ -57,25 +58,32 @@ export default function VerifyEmail() {
         <div className="flex w-full md:w-1/2 justify-center p-4 md:p-8 mt-8">
           <div className="bg-white shadow-xl rounded-xl p-6 md:p-8 w-full max-w-md">
             {/* Title */}
-            <h2 className="text-lg md:text-lg font-extrabold text-gray-900 mb-6 text-center">
-              Enter OTP to Change Password
+            <h2 className="text-lg md:text-xl font-extrabold text-gray-900 mb-6 text-center">
+              Enter OTP to Verify Email
             </h2>
 
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* OTP */}
-              <input
-                type="text"
-                placeholder="Enter OTP"
-                {...register("otp")}
-                name="otp"
-                className="w-full px-4 py-2 border text-center rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-              />
-              {errors.otp && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.otp.message}
-                </p>
-              )}
+              <div>
+                <label
+                  htmlFor="otp"
+                  className="block font-dm-sans font-light text-black text-sm mb-1 text-center"
+                >
+                  One-Time Password
+                </label>
+                <input
+                  id="otp"
+                  type="text"
+                  placeholder="Enter OTP"
+                  {...register("otp")}
+                  className="w-full px-4 py-2 border text-center rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+                />
+                {errors.otp && (
+                  <p className="text-red-500 text-xs mt-1 text-center">
+                    {errors.otp.message}
+                  </p>
+                )}
+              </div>
 
               {/* Submit */}
               <button
