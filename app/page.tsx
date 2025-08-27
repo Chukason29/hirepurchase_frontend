@@ -1,8 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import logo from "@/public/images/hire-purchase-logo.png";
-import registerImage from "@/public/images/reg-image.png";
 import Link from "next/link";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -46,7 +44,12 @@ export default function RegisterPage() {
     <>
       {/* Logo header */}
       <div className="flex items-center justify-end p-4 bg-white shadow-sm sticky top-0 z-50">
-        <Image src={logo} alt="Hire purchase logo" height={30} />
+        <Image
+          src="https://res.cloudinary.com/djjqicpga/image/upload/v1756282560/hire-purchase-logo_rih8e5.png"
+          alt="Hire purchase logo"
+          width={150}
+          height={30}
+        />
       </div>
 
       {/* Main content */}
@@ -54,7 +57,9 @@ export default function RegisterPage() {
         {/* Left image */}
         <div className="hidden md:flex w-1/2 justify-center p-8">
           <Image
-            src={registerImage}
+            src="https://res.cloudinary.com/djjqicpga/image/upload/v1756282564/reg-image_ie5jgz.png"
+            width={600}
+            height={10}
             alt="Hire purchase register image"
             className="rounded-lg shadow-lg object-contain max-w-full h-auto"
             priority

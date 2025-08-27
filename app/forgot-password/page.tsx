@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import logo from "@/public/images/hire-purchase-logo.png";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   forgotPasswordSchema,
@@ -31,7 +30,9 @@ export default function ForgotPassword() {
       toast.success("Verification code sent to your email!");
       router.push("/otp");
     } catch (error) {
-      toast.error((error as { message?: string })?.message || "Something went wrong");
+      toast.error(
+        (error as { message?: string })?.message || "Something went wrong"
+      );
       console.error(error);
     }
   };
@@ -40,7 +41,12 @@ export default function ForgotPassword() {
     <>
       {/* Top navbar */}
       <div className="flex items-center justify-start p-4 bg-white shadow-sm sticky top-0 z-50">
-        <Image src={logo} alt="Hire purchase logo" height={30} />
+        <Image
+          src="https://res.cloudinary.com/djjqicpga/image/upload/v1756282560/hire-purchase-logo_rih8e5.png"
+          alt="Hire purchase logo"
+          height={30}
+          width={150}
+        />
       </div>
 
       {/* Main content */}

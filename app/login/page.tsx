@@ -41,14 +41,21 @@ export default function Login() {
     <>
       {/* Logo header */}
       <div className="flex items-center justify-end p-4 bg-white shadow-sm sticky top-0 z-50">
-        <Image src={logo} alt="Hire purchase logo" height={30} />
+        <Image
+          src="https://res.cloudinary.com/djjqicpga/image/upload/v1756282560/hire-purchase-logo_rih8e5.png"
+          alt="Hire purchase logo"
+          width={150}
+          height={30}
+        />
       </div>
 
       <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-50 px-4">
         {/* Left image */}
         <div className="hidden md:flex w-1/2 justify-center p-8">
           <Image
-            src={registerImage}
+            src="https://res.cloudinary.com/djjqicpga/image/upload/v1756282564/reg-image_ie5jgz.png"
+            width={600}
+            height={10}
             alt="Hire purchase register image"
             className="rounded-lg shadow-lg object-cover"
           />
