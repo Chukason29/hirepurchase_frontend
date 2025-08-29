@@ -26,7 +26,7 @@ export default function Login() {
     console.log("Submitting:", data);
     try {
       await loginUser(data);
-      toast.success("Login successful!");
+      // toast.success("Login successful!");
       reset();
     } catch (error) {
       toast.error((error as { message?: string })?.message || "Login failed");

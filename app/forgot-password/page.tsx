@@ -27,7 +27,7 @@ export default function ForgotPassword() {
     console.log("Submitting:", data);
     try {
       await forgotPassword(data.email);
-      toast.success("Verification code sent to your email!");
+      // toast.success("Verification code sent to your email!");
       router.push("/otp");
     } catch (error) {
       toast.error(

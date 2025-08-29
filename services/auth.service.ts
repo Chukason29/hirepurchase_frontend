@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 export const registerUser = async (payload: RegisterSchema): Promise<void> => {
   try {
-    const response = await hirePurchaseApi.post("/register", payload);
+    const response = await hirePurchaseApi.post("/api/register", payload);
     if (response.status === 200) {
       toast.success(
         response.data.message ||
@@ -32,7 +32,7 @@ export const registerUser = async (payload: RegisterSchema): Promise<void> => {
 
 export const verifyOtp = async (otp: string): Promise<void> => {
   try {
-    const response = await hirePurchaseApi.post("/verification", { otp });
+    const response = await hirePurchaseApi.post("/api/verification", { otp });
     if (response.status === 200) {
       toast.success(response.data.message || "Email is verified successfully!");
     }
@@ -51,7 +51,7 @@ export const loginUser = async (
   payload: LoginSchema
 ): Promise<void> => {
   try {
-    const response = await hirePurchaseApi.post("/login", payload);
+    const response = await hirePurchaseApi.post("/api/login", payload);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -87,7 +87,7 @@ export const loginUser = async (
 
 export const forgotPassword = async (email: string): Promise<void> => {
   try {
-    const response = await hirePurchaseApi.post("/forgot-password", { email });
+    const response = await hirePurchaseApi.post("/api/forgot-password", { email });
     if (response.status === 200) {
       toast.success(
         response.data.message || "Password reset link sent to your email."
@@ -106,7 +106,7 @@ export const forgotPassword = async (email: string): Promise<void> => {
 
 export const forgotPasswordOtp = async (otp: string): Promise<void> => {
   try {
-    const response = await hirePurchaseApi.post("/otp/confirmation", { otp });
+    const response = await hirePurchaseApi.post("/api/otp/confirmation", { otp });
     if (response.status === 200) {
       toast.success(response.data.message || "OTP verified successfully!");
     }

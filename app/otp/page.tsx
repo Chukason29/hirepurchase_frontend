@@ -25,7 +25,7 @@ export default function VerifyEmail() {
     try {
       await verifyOtp(data.otp);
       console.log("OTP verified successfully");
-      toast.success("OTP verified successfully!");
+      // toast.success("OTP verified successfully!");
       router.push("/login");
     } catch (error) {
       toast.error(

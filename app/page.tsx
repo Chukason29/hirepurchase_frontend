@@ -37,7 +37,7 @@ export default function RegisterPage() {
     console.log("Submitting:", data);
     try {
       await registerUser(data);
-      toast.success("Registration successful!");
+      // toast.success("Registration successful!");
       router.push("/otp");
     } catch (error) {
       toast.error(
