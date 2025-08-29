@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export const hirePurchaseApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  withCredentials: true,
-  timeout: 60000,
+  baseURL: "https://invest.hirepurchase.ng/api/",
+  // withCredentials: true,
+  // timeout: 60000,
 });
 
 hirePurchaseApi.interceptors.request.use(
