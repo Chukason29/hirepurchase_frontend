@@ -1,10 +1,11 @@
 import { hirePurchaseApi } from "@/api/API";
 import { LoginSchema, RegisterSchema } from "@/utils/Validator";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 export const registerUser = async (payload: RegisterSchema): Promise<void> => {
   try {
-    const response = await hirePurchaseApi.post("/register", payload);
+    const response = await axios.post("https://invest.hirepurchase.ng/api/register", payload);
     if (response.status === 200) {
       toast.success(
         response.data.message ||
