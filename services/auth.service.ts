@@ -1,6 +1,6 @@
 import { hirePurchaseApi } from "@/api/API";
 import { LoginSchema, RegisterSchema } from "@/utils/Validator";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 export const registerUser = async (payload: RegisterSchema): Promise<void> => {
   try {
