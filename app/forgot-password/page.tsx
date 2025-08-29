@@ -10,12 +10,16 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { forgotPassword } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function ForgotPassword() {
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<ForgotPasswordSchema>({
     resolver: zodResolver(forgotPasswordSchema),
     mode: "onChange",
@@ -25,15 +29,14 @@ export default function ForgotPassword() {
 
   const onSubmit = async (data: ForgotPasswordSchema) => {
     console.log("Submitting:", data);
+    setLoading(true);
     try {
       await forgotPassword(data.email);
-      // toast.success("Verification code sent to your email!");
-      router.push("/otp");
+      router.push("/forgot-password/otp");
     } catch (error) {
-      toast.error(
-        (error as { message?: string })?.message || "Something went wrong"
-      );
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -85,10 +88,36 @@ export default function ForgotPassword() {
             </div>
 
             <button
+              disabled={!isValid || loading}
               type="submit"
-              className="w-full bg-gray-600 text-white py-2.5 rounded-lg hover:bg-gray-700 transition-all duration-200 ease-in-out shadow-sm"
+              className={`w-full flex items-center justify-center bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
+                !isValid || loading
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
             >
-              Send 6-digit Code
+              {loading ? (
+                <div className="flex items-center space-x-1">
+                  <motion.span
+                    className="w-2 h-2 bg-white rounded-full"
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ repeat: Infinity, duration: 0.6 }}
+                  />
+                  <motion.span
+                    className="w-2 h-2 bg-white rounded-full"
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
+                  />
+                  <motion.span
+                    className="w-2 h-2 bg-white rounded-full"
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
+                  />
+                  <span className="ml-2">Sending Code...</span>
+                </div>
+              ) : (
+                "Send 6-digit code"
+              )}
             </button>
           </form>
         </div>

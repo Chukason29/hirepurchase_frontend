@@ -6,21 +6,21 @@ import { useEffect, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { registerSchema, type RegisterSchema } from "@/utils/Validator";
-import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { hirePurchaseApi } from "@/api/API";
+import { motion } from "framer-motion";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log("ENV:", process.env.NEXT_PUBLIC_BASE_URL);
     console.log("Axios instance baseURL:", hirePurchaseApi.defaults.baseURL);
   }, []);
-  
 
   const {
     register,
@@ -35,15 +35,14 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterSchema) => {
     console.log("Submitting:", data);
+    setLoading(true);
     try {
       await registerUser(data);
-      // toast.success("Registration successful!");
       router.push("/otp");
     } catch (error) {
-      toast.error(
-        (error as { message?: string })?.message || "Something went wrong"
-      );
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -179,9 +178,9 @@ export default function RegisterPage() {
                   className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
                 >
                   {showRePassword ? (
-                    <FiEyeOff size={20} />
+                    <FiEyeOff size={20} className="cursor-pointer" />
                   ) : (
-                    <FiEye size={20} />
+                    <FiEye size={20} className="cursor-pointer" />
                   )}
                 </button>
               </div>
@@ -195,13 +194,44 @@ export default function RegisterPage() {
 
               {/* Submit */}
               <button
-                disabled={!isValid}
+                disabled={!isValid || loading}
                 type="submit"
-                className={`w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
-                  !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                className={`w-full flex items-center justify-center bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
+                  !isValid || loading
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
                 }`}
               >
-                Sign Up
+                {loading ? (
+                  <div className="flex items-center space-x-1">
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ repeat: Infinity, duration: 0.6 }}
+                    />
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 0.6,
+                        delay: 0.2,
+                      }}
+                    />
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 0.6,
+                        delay: 0.4,
+                      }}
+                    />
+                    <span className="ml-2">Signing Up...</span>
+                  </div>
+                ) : (
+                  "Sign Up"
+                )}
               </button>
 
               <p className="text-center text-gray-500 mt-4 text-xs">

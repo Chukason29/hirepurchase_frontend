@@ -8,9 +8,11 @@ import { loginSchema, type LoginSchema } from "@/utils/Validator";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginUser } from "@/services/auth.service";
+import { motion } from "framer-motion";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -24,13 +26,14 @@ export default function Login() {
 
   const onSubmit = async (data: LoginSchema) => {
     console.log("Submitting:", data);
+    setLoading(true);
     try {
       await loginUser(data);
-      // toast.success("Login successful!");
       reset();
     } catch (error) {
-      toast.error((error as { message?: string })?.message || "Login failed");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,13 +151,44 @@ export default function Login() {
 
               {/* Login button */}
               <button
+                disabled={!isValid || loading}
                 type="submit"
-                disabled={!isValid}
-                className={`w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
-                  !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                className={`w-full flex items-center justify-center bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
+                  !isValid || loading
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
                 }`}
               >
-                Login
+                {loading ? (
+                  <div className="flex items-center space-x-1">
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ repeat: Infinity, duration: 0.6 }}
+                    />
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 0.6,
+                        delay: 0.2,
+                      }}
+                    />
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 0.6,
+                        delay: 0.4,
+                      }}
+                    />
+                    <span className="ml-2">Signing In...</span>
+                  </div>
+                ) : (
+                  "Sign In"
+                )}
               </button>
             </form>
           </div>

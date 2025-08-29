@@ -7,8 +7,12 @@ import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { verifyOtp } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function VerifyEmail() {
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -22,16 +26,15 @@ export default function VerifyEmail() {
 
   const onSubmit = async (data: OtpSchema) => {
     console.log("Submitting:", data);
+    setLoading(true);
     try {
       await verifyOtp(data.otp);
       console.log("OTP verified successfully");
-      // toast.success("OTP verified successfully!");
       router.push("/login");
     } catch (error) {
-      toast.error(
-        (error as { message?: string })?.message || "Failed to verify OTP"
-      );
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,13 +97,44 @@ export default function VerifyEmail() {
 
               {/* Submit */}
               <button
-                disabled={!isValid}
+                disabled={!isValid || loading}
                 type="submit"
-                className={`w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
-                  !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                className={`w-full flex items-center justify-center bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition ${
+                  !isValid || loading
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
                 }`}
               >
-                Verify OTP
+                {loading ? (
+                  <div className="flex items-center space-x-1">
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ repeat: Infinity, duration: 0.6 }}
+                    />
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 0.6,
+                        delay: 0.2,
+                      }}
+                    />
+                    <motion.span
+                      className="w-2 h-2 bg-white rounded-full"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 0.6,
+                        delay: 0.4,
+                      }}
+                    />
+                    <span className="ml-2">Verifying OTP...</span>
+                  </div>
+                ) : (
+                  "Verify OTP"
+                )}
               </button>
             </form>
           </div>
