@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { registerSchema, type RegisterSchema } from "@/utils/Validator";
@@ -10,10 +10,17 @@ import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
+import { hirePurchaseApi } from "@/api/API";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
+
+  useEffect(() => {
+    console.log("ENV:", process.env.NEXT_PUBLIC_BASE_URL);
+    console.log("Axios instance baseURL:", hirePurchaseApi.defaults.baseURL);
+  }, []);
+  
 
   const {
     register,
