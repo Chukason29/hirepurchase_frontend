@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { otpSchema, type OtpSchema } from "@/utils/Validator";
-import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { verifyOtp } from "@/services/auth.service";
 import { useRouter } from "next/navigation";

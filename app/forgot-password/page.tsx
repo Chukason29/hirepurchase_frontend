@@ -6,7 +6,6 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordSchema,
 } from "@/utils/Validator";
-import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { forgotPassword } from "@/services/auth.service";
 import { useRouter } from "next/navigation";

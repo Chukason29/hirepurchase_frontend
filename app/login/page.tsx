@@ -5,7 +5,6 @@ import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { loginSchema, type LoginSchema } from "@/utils/Validator";
-import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginUser } from "@/services/auth.service";
 import { motion } from "framer-motion";
