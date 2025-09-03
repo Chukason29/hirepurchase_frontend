@@ -8,6 +8,7 @@ import { loginSchema, type LoginSchema } from "@/utils/Validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginUser } from "@/services/auth.service";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,12 +24,14 @@ export default function Login() {
     mode: "onChange",
   });
 
+  const router = useRouter()
+
   const onSubmit = async (data: LoginSchema) => {
     console.log("Submitting:", data);
     setLoading(true);
     try {
       await loginUser(data);
-      reset();
+      router.push("/overview")
     } catch (error) {
       console.error(error);
     } finally {

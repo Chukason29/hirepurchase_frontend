@@ -17,11 +17,6 @@ export default function RegisterPage() {
   const [showRePassword, setShowRePassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log("ENV:", process.env.NEXT_PUBLIC_BASE_URL);
-    console.log("Axios instance baseURL:", hirePurchaseApi.defaults.baseURL);
-  }, []);
-
   const {
     register,
     handleSubmit,

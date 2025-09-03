@@ -37,7 +37,7 @@ hirePurchaseApi.interceptors.response.use(
     }
 
     console.log(error);
-    console.error(message);
+    // console.error(message);
     // toast.error(message);
     return Promise.reject(error);
   }

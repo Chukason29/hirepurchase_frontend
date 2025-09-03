@@ -1,81 +1,75 @@
 "use client";
 
-import Link from "next/link";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
-import logo from "@/public/images/hire-purchase-logo.png";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Navbar() {
+  const [notifications] = useState(0);
+  const user = useAuthStore((state) => state.user);
+
   return (
-    <nav className="bg-gray-100 shadow-md fixed w-full z-50">
-      <div className="flex justify-between items-center p-5 max-w-7xl mx-auto">
-        {/* Logo - Left */}
-        <div className="flex-shrink-0">
-          <Link
-            href="/"
-            className="font-poppins font-black text-2xl text-black hover:text-gray-700 transition-colors"
-          >
-            <Image src={logo} alt="hire purchase logo" width={150} />
-          </Link>
-        </div>
-
-        {/* Desktop Menu - Center */}
-        <div className="hidden md:flex flex-1 justify-center space-x-6">
-          <Link href="#about" scroll={true} className="hover:text-gray-700">
-            About
-          </Link>
-          <Link
-            href="#investments"
-            scroll={true}
-            className="hover:text-gray-700"
-          >
-            Investments
-          </Link>
-        </div>
-
-        {/* Contact Button - Right */}
-        <div className="hidden md:flex justify-end flex-shrink-0">
-          <Link
-            href="https://invest.hirepurchase.ng"
-            className="p-3 bg-gray-700 text-white rounded-lg hover:bg-black"
-          >
-            Get Started
-          </Link>
-        </div>
-
-        {/* Mobile Hamburger */}
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <button>
-                <Menu className="h-8 w-8 text-black" />
-              </button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="bg-gray-100 flex items-center justify-center"
-            >
-              {/* Mobile Menu */}
-              <div className="flex flex-col space-y-4 mt-8">
-                <Link href="#about" className="hover:text-gray-700">
-                  About
-                </Link>
-                <Link href="#investments" className="hover:text-gray-700">
-                  Investments
-                </Link>
-
-                <Link
-                  href="https://invest.hirepurchase.ng"
-                  className="hover:text-gray-700"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </SheetContent>
-          </Sheet>
+    <motion.header
+      initial={{ y: -80 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 80 }}
+      className="w-full bg-yellow-400 shadow-md px-4 md:px-8 h-14 flex items-center justify-between"
+    >
+      {/* Left Section: Hamburger (mobile) / Logo (desktop) */}
+      <div className="flex items-center">
+        {/* Hamburger menu only on mobile */}
+        <div className="block md:hidden">
+          <Image
+            src="https://res.cloudinary.com/djjqicpga/image/upload/v1756282560/hire-purchase-logo_rih8e5.png"
+            alt="Hire purchase Logo"
+            width={150}
+            height={40}
+          />
         </div>
       </div>
-    </nav>
+
+      {/* Center (mobile) / Right (desktop): Notifications + User */}
+      <div className="flex items-center gap-6 md:ml-auto mx-auto md:mx-0">
+        {/* Notification bell */}
+        <div className="relative cursor-pointer">
+          <Bell size={22} className="text-black" />
+          {notifications > 0 && (
+            <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+              {notifications}
+            </span>
+          )}
+        </div>
+
+        {/* User profile */}
+        <div className="flex items-center gap-2">
+          <Avatar>
+            <AvatarImage src="" alt="user" />
+            <AvatarFallback>👤</AvatarFallback>
+          </Avatar>
+          {/* Username visible only on md and above */}
+          <p className="hidden md:block text-sm text-gray-800">
+            Hello,{" "}
+            {user ? (
+              <span className="font-medium">{user.name}</span>
+            ) : (
+              <span>User</span>
+            )}
+          </p>
+        </div>
+      </div>
+
+      {/* Right Section: Logo for mobile only */}
+      {/* <div className="block md:hidden">
+        <Image
+          src="https://res.cloudinary.com/djjqicpga/image/upload/v1756282560/hire-purchase-logo_rih8e5.png"
+          alt="Hire purchase Logo"
+          width={120}
+          height={32}
+        />
+      </div> */}
+    </motion.header>
   );
 }

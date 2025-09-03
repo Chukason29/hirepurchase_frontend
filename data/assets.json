@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Tricycle",
+    "slug": "tricycle",
+    "image": "https://res.cloudinary.com/djjqicpga/image/upload/v1756684293/keks_kh9w1u.png",
+
+    "description": "A reliable three-wheeled vehicle for urban transport.",
+    "status": "active",
+    "assetValue": "₦3,500,000",
+    "vat": "₦262,500",
+    "serviceCharge": "₦112,500",
+    "maintenanceFee": "₦350,000",
+    "totalAssetValue": "₦4,400,000",
+    "roi": "47.73%",
+    "profit": "₦2,100,120",
+    "totalPayout": "₦6,500,000",
+    "duration": "77 weeks"
+  },
+  {
+    "name": "Toyota Bus",
+    "slug": "toyota-bus",
+    "image": "https://res.cloudinary.com/djjqicpga/image/upload/v1756684296/bus_azm5h6.jpg",
+
+    "description": "A spacious bus for public transportation.",
+    "status": "active",
+    "assetValue": "₦70,000,000",
+    "vat": "₦5,250,000",
+    "serviceCharge": "₦2,250,000",
+    "maintenanceFee": "₦7,000,000",
+    "totalAssetValue": "₦84,500,000",
+    "roi": "50%",
+    "profit": "₦42,250,000",
+    "totalPayout": "₦126,750,000",
+    "duration": "104 weeks"
+  },
+  {
+    "name": "Car",
+    "slug": "car",
+    "image": "https://res.cloudinary.com/djjqicpga/image/upload/v1756684282/car_hmf56v.png",
+
+    "description": "A compact car for personal use.",
+    "status": "active",
+    "assetValue": "₦10,000,000",
+    "vat": "₦750,000",
+    "serviceCharge": "₦320,000",
+    "maintenanceFee": "₦1,000,000",
+    "totalAssetValue": "₦12,070,000",
+    "roi": "45%",
+    "profit": "₦5,431,500",
+    "totalPayout": "₦17,501,500",
+    "duration": "52 weeks"
+  },
+  {
+    "name": "Toyota Bus (Mini)",
+    "slug": "toyota-bus-mini",
+    "image": "https://res.cloudinary.com/djjqicpga/image/upload/v1756684294/minibus_e1uf83.jpg",
+
+    "description": "A smaller version of the Toyota Bus for efficient transport.",
+    "status": "active",
+    "assetValue": "₦30,000,000",
+    "vat": "₦2,250,000",
+    "serviceCharge": "₦960,000",
+    "maintenanceFee": "₦3,000,000",
+    "totalAssetValue": "₦36,210,000",
+    "roi": "48%",
+    "profit": "₦17,380,800",
+    "totalPayout": "₦53,590,800",
+    "duration": "78 weeks"
+  },
+  {
+    "name": "Tricycle Max",
+    "slug": "tricycle-max",
+    "image": "https://res.cloudinary.com/djjqicpga/image/upload/v1756719457/keksmax_sp2qfn.png",
+    "description": "An upgraded tricycle with enhanced features.",
+    "status": "active",
+    "assetValue": "₦7,000,000",
+    "vat": "₦525,000",
+    "serviceCharge": "₦225,000",
+    "maintenanceFee": "₦700,000",
+    "totalAssetValue": "₦8,450,000",
+    "roi": "49%",
+    "profit": "₦4,140,500",
+    "totalPayout": "₦12,590,500",
+    "duration": "65 weeks"
+  },
+  {
+    "name": "Bike",
+    "slug": "bike",
+    "image": "https://res.cloudinary.com/djjqicpga/image/upload/v1756719464/bike_gu7exp.png",
+    "description": "A fast and agile motorcycle for delivery services.",
+    "status": "active",
+    "assetValue": "₦2,500,000",
+    "vat": "₦187,500",
+    "serviceCharge": "₦80,000",
+    "maintenanceFee": "₦250,000",
+    "totalAssetValue": "₦3,017,500",
+    "roi": "50%",
+    "profit": "₦1,508,750",
+    "totalPayout": "₦4,526,250",
+    "duration": "52 weeks"
+  }
+]
