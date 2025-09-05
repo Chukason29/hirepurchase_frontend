@@ -10,13 +10,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 
 interface DateFilterProps {
   fromDate: Date | undefined;
@@ -32,8 +32,8 @@ const DateFilter = ({
   toDate,
   setFromDate,
   setToDate,
-  transactionType,
-  setTransactionType,
+  // transactionType,
+  // setTransactionType,
 }: DateFilterProps) => {
   return (
     <motion.div
@@ -43,7 +43,7 @@ const DateFilter = ({
       className="flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-6 mb-8 p-4 bg-gradient-to-r from-gray-600 via-gray-800 to-gray-600 rounded-xl shadow-lg"
     >
       {/* Transaction type select */}
-      <Select value={transactionType} onValueChange={setTransactionType}>
+      {/* <Select value={transactionType} onValueChange={setTransactionType}>
         <SelectTrigger className="w-full md:w-[180px] bg-cyan-600 text-white hover:bg-cyan-500 transition-colors duration-300 border-none shadow-md">
           <SelectValue placeholder="All" />
         </SelectTrigger>
@@ -58,7 +58,7 @@ const DateFilter = ({
             Withdrawal
           </SelectItem>
         </SelectContent>
-      </Select>
+      </Select> */}
 
       {/* Date pickers */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full">
@@ -117,6 +117,9 @@ const DateFilter = ({
             />
           </PopoverContent>
         </Popover>
+        <Button className="px-5 py-3 border border-cyan-300 cursor-pointer">
+          Submit
+        </Button>
       </div>
     </motion.div>
   );

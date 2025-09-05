@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 
 const PortfolioComponent = () => {
   const [isActive, setIsActive] = useState(true);
-  const [isIndividual, setIsIndividual] = useState(true);
+  // const [isIndividual, setIsIndividual] = useState(true);
 
   return (
-    <div className="min-h-screen text-white p-6">
+    <div className="min-h-screen text-gray-700 p-6">
       <h1 className="text-4xl font-bold mb-6 text-center neon-text">
         My Portfolio
       </h1>
@@ -36,7 +36,7 @@ const PortfolioComponent = () => {
         </motion.button>
       </div>
       <div className="flex justify-center gap-4 mb-4">
-        <Button
+        {/* <Button
           variant="outline"
           onClick={() => setIsIndividual(true)}
           className={`bg-gray-800 text-yellow-400 border-yellow-400 hover:bg-yellow-400 hover:text-black cursor-pointer ${
@@ -53,7 +53,7 @@ const PortfolioComponent = () => {
           }`}
         >
           Clique
-        </Button>
+        </Button> */}
       </div>
       {isActive ? (
         <motion.div
@@ -61,9 +61,7 @@ const PortfolioComponent = () => {
           animate={{ opacity: 1 }}
           className="text-center text-gray-400"
         >
-          {isIndividual
-            ? "No active individual investments found."
-            : "No active clique investments found."}
+          No active individual investments found.
         </motion.div>
       ) : (
         <motion.div
@@ -71,9 +69,7 @@ const PortfolioComponent = () => {
           animate={{ opacity: 1 }}
           className="text-center text-gray-400"
         >
-          {isIndividual
-            ? "No completed individual investments found."
-            : "No completed clique investments found."}
+          No completed individual investments found.
         </motion.div>
       )}
     </div>

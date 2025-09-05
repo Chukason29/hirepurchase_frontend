@@ -1,12 +1,16 @@
-"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+"use client";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+// import { Button } from "@/components/ui/button";
+// import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAssets } from "@/services/assets.service";
+import Image from "next/image";
+import { toast } from "react-toastify";
+import ActionButton from "@/components/action-button";
 
 interface Asset {
   id: string;
@@ -46,6 +50,7 @@ const VehicleCard = () => {
           }));
 
           setAssets(mappedAssets);
+          toast.success("Fetched assets successfully!!");
         } else {
           toast.error((response as any).message || "Failed to load assets");
         }
@@ -107,10 +112,12 @@ const VehicleCard = () => {
               onClick={() => router.push(`/assets/${asset.id}`)}
             >
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <img
+                <Image
                   src={asset.imageLink}
                   alt={asset.name}
-                  className="w-32 h-32 object-contain mb-4"
+                  className="object-contain mb-4"
+                  width={150}
+                  height={150}
                 />
                 <h3 className="text-xl font-semibold text-purple-600">
                   {asset.name}
@@ -133,13 +140,15 @@ const VehicleCard = () => {
           </motion.div>
         ))}
       </div>
-     <div className="flex justify-end mt-10">
-     <Button className="bg-gray-700 hover:bg-yellow-400 text-white font-bold px-6 py-2 rounded-lg shadow">
-        <Link href="/assets" className="hover:underline">
-          View More
-        </Link>
-      </Button>
-     </div>
+      <div className="flex justify-end mt-10">
+        <ActionButton
+          text="View More"
+          route="/assets"
+          bgColor="bg-gray-700"
+          textColor="text-white"
+          className="bg-gray-700 hover:bg-yellow-400 text-white font-bold px-6 py-2 rounded-lg shadow"
+        />
+      </div>
     </motion.div>
   );
 };

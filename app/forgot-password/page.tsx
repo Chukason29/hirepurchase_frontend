@@ -115,7 +115,7 @@ export default function ForgotPassword() {
                   <span className="ml-2">Sending Code...</span>
                 </div>
               ) : (
-                "Send 6-digit code"
+                "Send OTP"
               )}
             </button>
           </form>

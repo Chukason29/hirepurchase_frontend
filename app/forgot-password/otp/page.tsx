@@ -28,7 +28,7 @@ export default function VerifyEmail() {
     setLoading(true);
     try {
       await forgotPasswordOtp(data.otp);
-      router.push("/login");
+      router.push("/reset-password");
     } catch (error) {
       console.error(error);
     } finally {

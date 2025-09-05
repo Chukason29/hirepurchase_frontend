@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getAssets } from "@/services/assets.service";
+import Image from "next/image";
 
 interface Asset {
   id: string;
@@ -105,10 +108,12 @@ const AssetsGrid = () => {
               onClick={() => router.push(`/assets/${asset.id}`)}
             >
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <img
+                <Image
                   src={asset.imageLink}
                   alt={asset.name}
                   className="w-32 h-32 object-contain mb-4"
+                  width={150}
+                  height={150}
                 />
                 <h3 className="text-xl font-semibold text-purple-600">
                   {asset.name}

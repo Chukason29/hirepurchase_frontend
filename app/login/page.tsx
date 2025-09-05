@@ -17,21 +17,20 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isValid },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
   const onSubmit = async (data: LoginSchema) => {
     console.log("Submitting:", data);
     setLoading(true);
     try {
       await loginUser(data);
-      router.push("/overview")
+      router.push("/overview");
     } catch (error) {
       console.error(error);
     } finally {

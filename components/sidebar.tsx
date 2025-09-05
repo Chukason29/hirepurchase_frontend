@@ -9,28 +9,44 @@ import {
   ArrowRightCircle,
   Wallet,
   User,
-  Users,
   FileText,
   Menu,
   X,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { usePathname } from "next/navigation"; // ✅ to track active route
+import { usePathname, useRouter } from "next/navigation";
+// import { toast } from "sonner";
+import { logoutUser } from "@/services/auth.service";
 
 const navLinks = [
   { name: "Overview", href: "/overview", icon: LayoutDashboard },
-  { name: "Transactions", href: "/transactions", icon: FileText },
+  { name: "Withdrawals", href: "/withdrawals", icon: FileText },
   { name: "Assets", href: "/assets", icon: Wallet },
   { name: "My Portfolio", href: "/portfolio", icon: FileText },
   { name: "Profile", href: "/profile", icon: User },
-  // { name: "Clique", href: "/clique", icon: Users },
-  { name: "Log out", href: "/login", icon: ArrowRightCircle },
+  { name: "Log out", href: "/login", icon: ArrowRightCircle, isLogout: true },
 ];
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname(); // ✅ current route
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter()
+
+  const handleConfirmLogout = async () => {
+    setLoading(true);
+    try {
+      await logoutUser();
+      router.push("/login")
+    } catch (err) {
+      console.error("Logout failed", err);
+    } finally {
+      setLoading(false);
+      setShowModal(false);
+    }
+  };
 
   return (
     <>
@@ -76,6 +92,21 @@ export default function Sidebar() {
               const isActive =
                 pathname === link.href || pathname.startsWith(`${link.href}/`);
 
+              // ✅ Handle Logout with modal
+              if (link.isLogout) {
+                return (
+                  <button
+                    key={link.name}
+                    onClick={() => setShowModal(true)}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition w-full text-left text-red-500 hover:bg-red-600 hover:text-white`}
+                  >
+                    <Icon size={18} />
+                    {link.name}
+                  </button>
+                );
+              }
+
+              // ✅ Normal Links
               return (
                 <Link
                   key={link.name}
@@ -112,6 +143,37 @@ export default function Sidebar() {
           </Card>
         </div>
       </motion.aside>
+
+      {/* ✅ Logout Confirmation Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/30 z-50">
+          <div className="bg-white text-black rounded-lg shadow-lg p-6 w-96 text-center">
+            <h2 className="text-lg font-semibold mb-4">
+              Are you sure you want to logout?
+            </h2>
+            <div className="flex justify-center gap-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                onClick={() => setShowModal(false)}
+                disabled={loading}
+              >
+                No
+              </button>
+              <button
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 flex items-center justify-center"
+                onClick={handleConfirmLogout}
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                ) : (
+                  "Yes"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

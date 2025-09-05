@@ -1,51 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/dashboard-layout";
 import PromoBanner from "@/components/promo-banner";
-import { getAssetById } from "@/services/assets.service";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
+import { type Asset, getAssetById } from "@/services/assets.service";
 import { Input } from "@/components/ui/input";
-
-interface Asset {
-  id: string;
-  name: string;
-  slug: string;
-  image: string;
-  description: string;
-  status: string;
-  assetValue: string;
-  vat: string;
-  serviceCharge: string;
-  maintenanceFee: string;
-  totalAssetValue: string;
-  roi: string;
-  profit: string;
-  totalPayout: string;
-  duration: string;
-}
+import Image from "next/image";
+import InvestmentModal from "@/components/investment-modal";
 
 const AssetDetails = ({ id }: { id: string }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const [asset, setAsset] = useState<Asset | null>(null);
   const [loading, setLoading] = useState(true);
   const [amount, setAmount] = useState<string>("");
   const [open, setOpen] = useState(false);
 
-  const profitRate = 15; // 15%
 
   const numericAmount = Number(amount) || 0;
-  const profit = (numericAmount * profitRate) / 100;
-  const totalWithProfit = numericAmount + profit;
+  // const profit = (numericAmount * profitRate) / 100;
 
   useEffect(() => {
     const fetchAsset = async () => {
@@ -111,10 +86,12 @@ const AssetDetails = ({ id }: { id: string }) => {
             transition={{ duration: 0.5 }}
             className="w-full lg:w-1/2"
           >
-            <img
+            <Image
               src={asset.imagelink}
               alt={asset.name}
-              className="w-full h-64 object-contain mb-4"
+              className="w-full object-contain mb-4"
+              width={100}
+              height={254}
             />
           </motion.div>
 
@@ -133,7 +110,7 @@ const AssetDetails = ({ id }: { id: string }) => {
               </CardHeader>
               <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-gray-700 p-3 rounded-lg">
-                  <p className="text-gray-400">Minimum Amount:</p>
+                  <p className="text-gray-400">Minimum Investment Amount:</p>
                   <p className="text-green-300">
                     ₦{Number(asset.minimum_amount).toLocaleString()}
                   </p>
@@ -169,7 +146,7 @@ const AssetDetails = ({ id }: { id: string }) => {
               <Button
                 className="w-full mt-6 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-all duration-300 cursor-pointer"
                 onClick={() => {
-                  if (amount >= Number(asset.minimum_amount)) {
+                  if (numericAmount >= Number(asset.minimum_amount)) {
                     setOpen(true);
                   } else {
                     alert(
@@ -184,46 +161,12 @@ const AssetDetails = ({ id }: { id: string }) => {
               </Button>
             </Card>
             {/* Investment Modal */}
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogContent className="bg-gray-900 text-white rounded-lg">
-                <DialogHeader>
-                  <DialogTitle className="text-lg text-cyan-300">
-                    Investment Breakdown
-                  </DialogTitle>
-                </DialogHeader>
-
-                <div className="space-y-3 text-gray-300">
-                  <p>
-                    <strong>Asset:</strong> {asset.name}
-                  </p>
-                  <p>
-                    <strong>Amount Invested:</strong> ₦{amount.toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>Profit Rate:</strong> {profitRate}%
-                  </p>
-                  <p>
-                    <strong>Expected Profit:</strong> ₦{profit.toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>Total after Profit:</strong> ₦
-                    {totalWithProfit.toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>Duration:</strong> {asset.duration} weeks
-                  </p>
-                </div>
-
-                <DialogFooter>
-                  <Button
-                    className="bg-green-600 hover:bg-green-500 cursor-ponter"
-                    onClick={() => router.push("#")}
-                  >
-                    Proceed to Payment
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <InvestmentModal
+              open={open}
+              onOpenChange={setOpen}
+              assetId={id} 
+              amount={numericAmount}
+            />
           </motion.div>
         </div>
 

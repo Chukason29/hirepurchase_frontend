@@ -1,30 +1,14 @@
 import { hirePurchaseApi } from "@/api/API";
-import { toast } from "react-toastify"; // Assuming you're using react-toastify for toast notifications
+import { getAuthHeader } from "@/services/investments.service";
+import { toast } from "sonner";
 
-interface Asset {
+export interface Asset {
   name: string;
-  description: string;
-  amount: number;
+  total_amount: number;
   duration: number;
-  percentage: number;
   vat_charge: number;
-  min_amount: number;
-  imageLink: string;
-}
-
-interface AssetDetail {
-  id: string;
-  name: string;
-  description: string;
-  amount: number;
   minimum_amount: number;
-  percentage: number;
-  vat_charge: number;
-  duration: number;
-  status: string;
   imagelink: string;
-  created_at: string;
-  updated_at: string;
 }
 
 interface ApiResponse {
@@ -33,13 +17,8 @@ interface ApiResponse {
   limit: number;
   total_records: number;
   total_pages: number;
-  data: Asset[];
-}
-
-interface AssetApiResponse {
-  status: string;
   message?: string;
-  data?: AssetDetail;
+  data: Asset[];
 }
 
 export const getAssets = async (
@@ -52,7 +31,8 @@ export const getAssets = async (
       {
         page,
         limit,
-      }
+      },
+      getAuthHeader()
     );
 
     if (response.data.status === "success") {
@@ -66,6 +46,7 @@ export const getAssets = async (
         limit,
         total_records: 0,
         total_pages: 0,
+        message: "Failed to fetch assets",
         data: [],
       };
     }
@@ -78,26 +59,25 @@ export const getAssets = async (
       limit,
       total_records: 0,
       total_pages: 0,
+      message: "Error fetching assets",
       data: [],
     };
   }
 };
 
-export const getAssetById = async (
-  asset_id: string
-): Promise<AssetApiResponse> => {
+export const getAssetById = async (asset_id: string): Promise<Asset | null> => {
   try {
-    const response = await hirePurchaseApi.post<ApiResponse>(
+    const response = await hirePurchaseApi.post<Asset>(
       "/api/assets/get",
-      { asset_id } // ✅ must match backend
+      { asset_id },
+      getAuthHeader()
     );
 
     return response.data;
-    toast.success("Asset fetched successfully")
-   
+    toast.success("Asset fetched successfully");
   } catch (error) {
     console.error("Error fetching asset details:", error);
     toast.error("Error fetching asset details");
-    return { status: "error", message: "Something went wrong" };
+    return null;
   }
 };

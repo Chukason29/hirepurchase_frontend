@@ -1,19 +1,20 @@
-import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
-interface TokenPayload {
-  sub: string;
-  role: string;
-  is_kyc: boolean;
+export interface DecodedToken {
   name?: string;
-  iat: number;
-  exp: number;
+  email?: string;
+  exp?: number;
+  [key: string]: any;
 }
 
-export const getUserFromToken = (token: string): TokenPayload | null => {
+export function decodeJWT(token: string): DecodedToken | null {
   try {
-    return jwtDecode<TokenPayload>(token);
+    const [, payload] = token.split(".");
+    if (!payload) return null;
+    const decoded = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+    return decoded;
   } catch (error) {
-    console.error("Invalid token:", error);
+    console.error("Failed to decode token:", error);
     return null;
   }
-};
+}

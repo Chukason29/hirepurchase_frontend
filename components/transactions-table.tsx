@@ -62,7 +62,7 @@ const TransactionsTable = ({
     >
       {/* ✅ Scrollable wrapper for very small screens */}
       <div className="w-full overflow-x-auto rounded-t-xl">
-        <Table className="text-white w-full min-w-[600px]">
+        <Table className="text-white w-full">
           <TableHeader className="bg-cyan-900">
             <TableRow>
               <TableHead className="text-cyan-200 font-bold py-2 px-3 text-sm sm:text-base">
@@ -71,9 +71,9 @@ const TransactionsTable = ({
               <TableHead className="text-cyan-200 font-bold py-2 px-3 text-sm sm:text-base">
                 Time
               </TableHead>
-              <TableHead className="text-cyan-200 font-bold py-2 px-3 text-sm sm:text-base">
+              {/* <TableHead className="text-cyan-200 font-bold py-2 px-3 text-sm sm:text-base">
                 Type
-              </TableHead>
+              </TableHead> */}
               <TableHead className="text-cyan-200 font-bold py-2 px-3 text-sm sm:text-base">
                 Status
               </TableHead>
@@ -90,7 +90,7 @@ const TransactionsTable = ({
               >
                 <TableCell className="py-2 px-3 text-sm">{tx.date}</TableCell>
                 <TableCell className="py-2 px-3 text-sm">{tx.time}</TableCell>
-                <TableCell className="py-2 px-3 text-sm">{tx.type}</TableCell>
+                {/* <TableCell className="py-2 px-3 text-sm">{tx.type}</TableCell> */}
                 <TableCell className="py-2 px-3 text-sm">{tx.status}</TableCell>
                 <TableCell className="py-2 px-3 text-sm">{tx.amount}</TableCell>
               </TableRow>

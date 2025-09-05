@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import ActionButton from "@/components/action-button";
 
 export default function BalanceCard() {
   const [showBalance, setShowBalance] = useState(false);
   const balance = "₦500,000.00"; // replace with real data
+  // const [loading, setLoading] = useState(false);
 
   return (
     <motion.div
@@ -40,9 +41,14 @@ export default function BalanceCard() {
 
       {/* Buttons */}
       <div className="mt-4 flex gap-3">
-        <Button className="bg-yellow-400 text-black hover:bg-yellow-500 cursor-pointer">
-          Withdraw
-        </Button>
+        <ActionButton
+          text="Withdraw"
+          route="/portfolio"
+          bgColor="bg-yellow-400"
+          textColor="text-black"
+          className="bg-yellow-400 text-black hover:bg-yellow-500 cursor-pointer"
+        />
+
         {/* <Button className="bg-green-500 hover:bg-green-600">Deposit</Button> */}
       </div>
     </motion.div>

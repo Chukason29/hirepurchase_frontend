@@ -1,15 +1,27 @@
 "use client";
-
-import { Bell, Menu } from "lucide-react";
-import { useState } from "react";
+import { Bell } from "lucide-react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
-import { useAuthStore } from "@/store/authStore";
+// import { useAuthStore } from "@/store/authStore";
+import { type DecodedToken, decodeJWT } from "@/utils/jwt";
+import Cookies from "js-cookie";
 
 export default function Navbar() {
+  const [user, setUser] = useState<DecodedToken | null>(null);
   const [notifications] = useState(0);
-  const user = useAuthStore((state) => state.user);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    console.log("Stored token:", token);
+
+    if (token) {
+      const decoded = decodeJWT(token);
+      console.log("Decoded token:", decoded);
+      setUser(decoded);
+    }
+  }, []);
 
   return (
     <motion.header
@@ -52,7 +64,7 @@ export default function Navbar() {
           {/* Username visible only on md and above */}
           <p className="hidden md:block text-sm text-gray-800">
             Hello,{" "}
-            {user ? (
+            {user?.name ? (
               <span className="font-medium">{user.name}</span>
             ) : (
               <span>User</span>

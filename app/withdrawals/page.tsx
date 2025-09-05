@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import DashboardLayout from "@/components/dashboard-layout";
 import DateFilter from "@/components/data-filter";
 import TransactionsTable from "@/components/transactions-table";
+import { isAfter, isBefore } from "date-fns";
 
 interface Transaction {
   date: string; // format: dd/MM/yyyy
