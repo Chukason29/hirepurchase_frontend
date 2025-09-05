@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const hirePurchaseApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  withCredentials: false,
+  withCredentials: true,
   timeout: 60000,
 });
 

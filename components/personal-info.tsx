@@ -98,15 +98,11 @@ const PersonalInfo: React.FC = () => {
         </div>
       </div>
 
-      <Button className="bg-gray-600 text-white cursor-pointer">
-        Create Transaction PIN
-      </Button>
-
       <div className="space-y-2">
         <h3 className="font-semibold">Your Referral Code</h3>
         <p className="bg-green-100 text-green-800 p-2 rounded">chuk027c</p>
         <div className="flex space-x-4">
-            <ReferralButtons code={user?.name || "chuk2341"} />
+          <ReferralButtons code={user?.name || "chuk2341"} />
         </div>
       </div>
 

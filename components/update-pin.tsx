@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 
 const UpdatePin = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -21,15 +22,44 @@ const UpdatePin = () => {
     mode: "onChange",
   });
 
-  // const router = useRouter();
-
   const onSubmit = async (data: ResetPinSChema) => {
-    console.log("Submitting:", data);
+    // Log the lengths of all fields to identify potential issues
+    console.log("Submitting data:", {
+      password: data.password,
+      passwordLength: data.password.length,
+      pin: data.pin,
+      pinLength: data.pin.length,
+      confirm_pin: data.confirm_pin,
+      confirmPinLength: data.confirm_pin.length,
+    });
+
+    // Client-side check for field lengths
+    const maxLength = 4; // Adjust based on your database schema
+    if (data.pin.length > maxLength) {
+      setError(`PIN is too long (${data.pin.length} characters). Must be ${maxLength} characters or less.`);
+      return;
+    }
+    if (data.confirm_pin.length > maxLength) {
+      setError(`Confirm PIN is too long (${data.confirm_pin.length} characters). Must be ${maxLength} characters or less.`);
+      return;
+    }
+    // Optionally check password if it’s stored in a VARCHAR(4) column
+    if (data.password.length > maxLength) {
+      setError(`Password is too long (${data.password.length} characters). Must be ${maxLength} characters or less.`);
+      return;
+    }
+
     setLoading(true);
+    setError(null);
     try {
-      await updatePin(data.old_pin, data.new_pin, data.confirm_new_pin);
-    } catch (error) {
-      console.error(error);
+      await updatePin(data.password, data.pin, data.confirm_pin);
+    } catch (error: any) {
+      console.error("UpdatePin error:", error);
+      // Customize error message based on database error
+      const errorMessage = error.message.includes("value too long for type character varying(4)")
+        ? `Database error: One of the fields (likely PIN or Confirm PIN) exceeds 4 characters.`
+        : error.message || "Failed to reset PIN. Please try again.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -37,26 +67,29 @@ const UpdatePin = () => {
 
   return (
     <div>
+      {error && <div className="text-red-500 mb-4">{error}</div>}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4 mb-5"
       >
         <Label>Reset Pin</Label>
         <Input
-          placeholder="Enter old pin here"
-          id="old_pin"
-          {...register("old_pin")}
+          placeholder="Enter password here"
+          id="password"
+          {...register("password")}
           className="bg-gray-100"
         />
         <Input
           placeholder="Enter new pin here"
-          id="new_pin"
-          {...register("new_pin")}
+          id="pin"
+          maxLength={4} // Prevent user from entering more than 4 characters
+          {...register("pin")}
           className="bg-gray-100"
         />
         <Input
-          id="confirm_new_pin"
-          {...register("confirm_new_pin")}
+          id="confirm_pin"
+          maxLength={4} // Prevent user from entering more than 4 characters
+          {...register("confirm_pin")}
           placeholder="Enter new pin confirmation here"
           className="bg-gray-100"
         />

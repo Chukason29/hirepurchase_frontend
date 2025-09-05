@@ -10,6 +10,7 @@ import { type Asset, getAssetById } from "@/services/assets.service";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import InvestmentModal from "@/components/investment-modal";
+import { toast } from "sonner";
 
 const AssetDetails = ({ id }: { id: string }) => {
   // const router = useRouter();
@@ -17,7 +18,6 @@ const AssetDetails = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState(true);
   const [amount, setAmount] = useState<string>("");
   const [open, setOpen] = useState(false);
-
 
   const numericAmount = Number(amount) || 0;
   // const profit = (numericAmount * profitRate) / 100;
@@ -122,12 +122,12 @@ const AssetDetails = ({ id }: { id: string }) => {
                   </p>
                 </div>
                 <div className="bg-gray-700 p-3 rounded-lg">
-                  <p className="text-gray-400">VAT:</p>
-                  <p className="text-green-300">{asset.vat_charge}%</p>
+                  <p className="text-gray-400">ROI Percentage:</p>
+                  <p className="text-green-300">{asset.percentage}%</p>
                 </div>
                 <div className="bg-gray-700 p-3 rounded-lg">
                   <p className="text-gray-400">Duration:</p>
-                  <p className="text-green-300">{asset.duration} weeks</p>
+                  <p className="text-green-300">{asset.duration} months</p>
                 </div>
               </CardContent>
               {/* Investment Form */}
@@ -149,7 +149,7 @@ const AssetDetails = ({ id }: { id: string }) => {
                   if (numericAmount >= Number(asset.minimum_amount)) {
                     setOpen(true);
                   } else {
-                    alert(
+                    toast.error(
                       `Amount must be at least ₦${Number(
                         asset.minimum_amount
                       ).toLocaleString()}`
@@ -161,12 +161,15 @@ const AssetDetails = ({ id }: { id: string }) => {
               </Button>
             </Card>
             {/* Investment Modal */}
-            <InvestmentModal
-              open={open}
-              onOpenChange={setOpen}
-              assetId={id} 
-              amount={numericAmount}
-            />
+            {open && numericAmount <= Number(asset.minimum_amount) && (
+              <InvestmentModal
+                open={open}
+                onOpenChange={setOpen}
+                assetId={id}
+                amount={numericAmount}
+              />
+            )}
+           
           </motion.div>
         </div>
 

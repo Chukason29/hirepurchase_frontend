@@ -17,6 +17,7 @@ import {
 } from "@/services/investments.service";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface InvestmentModalProps {
   open: boolean;
@@ -37,6 +38,8 @@ const InvestmentModal = ({
   const [paymentLoading, setPaymentLoading] = useState(false); // for payment button
 
   const [summary, setSummary] = useState<any>(null);
+
+  const router = useRouter()
 
   useEffect(() => {
     if (open) {
@@ -129,17 +132,7 @@ const InvestmentModal = ({
 
         <Button
           className="bg-green-600 hover:bg-green-500 cursor-pointer flex items-center justify-center gap-2"
-          onClick={async () => {
-            try {
-              setPaymentLoading(true);
-              await setInvestment(assetId, amount);
-              // ✅ Redirect handled by backend
-            } catch (err) {
-              console.error(err);
-              toast.error("Unable to process investment");
-              setPaymentLoading(false); // stop loader if backend fails
-            }
-          }}
+         onClick={() => router.push("https://invest.hirepurchase.ng/api/invest/set")}
           disabled={paymentLoading}
         >
           {paymentLoading ? (

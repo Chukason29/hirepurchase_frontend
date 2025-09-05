@@ -44,7 +44,7 @@ const VehicleCard = () => {
             duration: asset.duration,
             percentage: parseFloat(asset.percentage),
             vat_charge: parseFloat(asset.vat_charge),
-            min_amount: parseFloat(asset.minimum_amount),
+            minimum_amount: parseFloat(asset.minimum_amount),
             imageLink: asset.imagelink,
             slug: asset.name.toLowerCase().replace(/\s+/g, "-"),
           }));
@@ -127,13 +127,13 @@ const VehicleCard = () => {
                     {" "}
                     Minimum Investment Amount:
                   </span>{" "}
-                  ₦{asset.min_amount.toLocaleString()}
+                  ₦{asset.minimum_amount.toLocaleString()}
                 </p>
                 <p className="text-lg font-bold text-green-600">
                   <span className="text-lg font-bold text-gray-800">
                     ROI Percentage:
                   </span>{" "}
-                  {asset.vat_charge}%
+                  {asset.percentage}%
                 </p>
               </CardContent>
             </Card>

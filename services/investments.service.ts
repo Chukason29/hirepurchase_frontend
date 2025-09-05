@@ -11,6 +11,15 @@ export const getAuthHeader = () => {
   };
 };
 
+export const getOtpHeader = () => {
+  const token = Cookies.get("token"); // ✅ cookie instead of localStorage
+  return {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+};
+
 export const getInvestmentSummary = async (
   asset_id: string,
   amount: number

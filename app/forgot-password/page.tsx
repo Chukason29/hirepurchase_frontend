@@ -30,7 +30,13 @@ export default function ForgotPassword() {
     console.log("Submitting:", data);
     setLoading(true);
     try {
-      await forgotPassword(data.email);
+      const otpToken = await forgotPassword(data.email);
+
+      if (otpToken) {
+        // Save otpToken for use in OTP verification page
+        localStorage.setItem("otp_token", otpToken);
+      }
+
       router.push("/forgot-password/otp");
     } catch (error) {
       console.error(error);

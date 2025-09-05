@@ -46,14 +46,19 @@ export type CreatePinSchema = z.infer<typeof createPinSchema>;
 
 export const resetPinSchema = z
   .object({
-    old_pin: z
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    pin: z
       .string()
-      .min(4, "Please enter your old pin you can easily recall"),
-    new_pin: z.string().min(4, "Please enter a pin you can easily recall"),
-    confirm_new_pin: z.string().min(4, "Confirm the Pin you've entered"),
+      .length(4, "PIN must be exactly 4 characters")
+      .regex(/^\d+$/, "PIN must contain only digits"),
+    confirm_pin: z
+      .string()
+      .length(4, "Confirm PIN must be exactly 4 characters")
+      .regex(/^\d+$/, "Confirm PIN must contain only digits"),
   })
-  .refine((data) => data.new_pin === data.confirm_new_pin, {
-    message: "pins do not match",
+  .refine((data) => data.pin === data.confirm_pin, {
+    message: "PINs must match",
+    path: ["confirm_pin"],
   });
 
 export type ResetPinSChema = z.infer<typeof resetPinSchema>;
