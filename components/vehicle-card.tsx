@@ -20,7 +20,7 @@ interface Asset {
   duration: number;
   percentage: number;
   vat_charge: number;
-  min_amount: number;
+  minimum_amount: number;
   imageLink: string;
   slug?: string;
 }
