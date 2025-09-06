@@ -34,15 +34,14 @@ export default function Sidebar() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const pathname = usePathname();
-  const router = useRouter()
+  const router = useRouter();
 
   const handleConfirmLogout = async () => {
     setLoading(true);
     try {
       await logoutUser();
-      router.push("/login")
+      router.push("/login");
     } catch (err) {
-      toast.error("Logout failed");\
       console.error("Logout error:", err);
     } finally {
       setLoading(false);
