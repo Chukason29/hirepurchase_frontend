@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
 // import { toast } from "sonner";
 import { logoutUser } from "@/services/auth.service";
+import { toast } from "sonner";
 
 const navLinks = [
   { name: "Overview", href: "/overview", icon: LayoutDashboard },
@@ -41,7 +42,8 @@ export default function Sidebar() {
       await logoutUser();
       router.push("/login")
     } catch (err) {
-      console.error("Logout failed", err);
+      toast.error("Logout failed");\
+      console.error("Logout error:", err);
     } finally {
       setLoading(false);
       setShowModal(false);

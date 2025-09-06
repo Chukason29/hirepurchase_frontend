@@ -51,8 +51,8 @@ const AssetsGrid = () => {
           toast.error((response as any).message || "Failed to load assets");
         }
       } catch (error) {
-        console.error("Error loading assets:", error);
         toast.error("Error loading assets");
+        console.error("Error fetching assets:", error);
       } finally {
         setLoading(false);
       }

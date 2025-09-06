@@ -5,6 +5,7 @@ import { toast } from "sonner";
 export interface Asset {
   name: string;
   total_amount: number;
+  percentage: number;
   duration: number;
   vat_charge: number;
   minimum_amount: number;

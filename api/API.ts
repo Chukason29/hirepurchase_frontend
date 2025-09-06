@@ -36,9 +36,6 @@ hirePurchaseApi.interceptors.response.use(
       localStorage.removeItem("user");
     }
 
-    console.log(error);
-    // console.error(message);
-    // toast.error(message);
     return Promise.reject(error);
   }
 );

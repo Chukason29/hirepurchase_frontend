@@ -27,7 +27,6 @@ export default function ForgotPassword() {
   const router = useRouter();
 
   const onSubmit = async (data: ForgotPasswordSchema) => {
-    console.log("Submitting:", data);
     setLoading(true);
     try {
       const otpToken = await forgotPassword(data.email);

@@ -143,24 +143,30 @@ export const forgotPasswordOtp = async (otp: string): Promise<void> => {
       toast.success(response.data.message || "OTP verified successfully!");
     }
   } catch (error: any) {
-    console.error("OTP verification error:", error.response || error);
+    // console.error("OTP verification error:", error.response || error);
     const response = error?.response?.data;
     toast.error(response?.message || "OTP verification failed.");
     throw error;
   }
 };
 
-export const resetPassword = async (
-  data: ResetPasswordData,
-  otp_token: string
-): Promise<void> => {
+export const resetPassword = async (data: ResetPasswordData): Promise<void> => {
   try {
+    const otpToken = localStorage.getItem("otp_token");
+    if (!otpToken) {
+      toast.error("OTP token not found. Please restart the process.");
+      return;
+    }
+
+    const cleanedToken = otpToken.trim();
+
     const response = await hirePurchaseApi.post(
       "/api/passwords/reset",
       data, // ✅ only password data in body
       {
         headers: {
-          Authorization: `Bearer ${otp_token}`, // ✅ token in header
+          Authorization: `Bearer ${cleanedToken}`, // ✅ token from localStorage
+          "Content-Type": "application/json",
         },
       }
     );

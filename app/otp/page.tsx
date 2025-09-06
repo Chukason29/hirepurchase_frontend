@@ -8,6 +8,7 @@ import { verifyOtp } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 export default function VerifyEmail() {
   const [loading, setLoading] = useState(false);
@@ -24,11 +25,10 @@ export default function VerifyEmail() {
   const router = useRouter();
 
   const onSubmit = async (data: OtpSchema) => {
-    console.log("Submitting:", data);
     setLoading(true);
     try {
       await verifyOtp(data.otp);
-      console.log("OTP verified successfully");
+      toast.success("OTP verified successfully. Please log in.");
       router.push("/login");
     } catch (error) {
       console.error(error);

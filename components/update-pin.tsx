@@ -1,4 +1,4 @@
-// import { Button } from "@/components/ui/button";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useState } from "react";
@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 // import { useRouter } from "next/navigation";
 import { updatePin } from "@/services/auth.service";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 const UpdatePin = () => {
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,7 @@ const UpdatePin = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isValid },
   } = useForm<ResetPinSChema>({
     resolver: zodResolver(resetPinSchema),
@@ -23,40 +25,30 @@ const UpdatePin = () => {
   });
 
   const onSubmit = async (data: ResetPinSChema) => {
-    // Log the lengths of all fields to identify potential issues
-    console.log("Submitting data:", {
-      password: data.password,
-      passwordLength: data.password.length,
-      pin: data.pin,
-      pinLength: data.pin.length,
-      confirm_pin: data.confirm_pin,
-      confirmPinLength: data.confirm_pin.length,
-    });
-
-    // Client-side check for field lengths
     const maxLength = 4; // Adjust based on your database schema
     if (data.pin.length > maxLength) {
-      setError(`PIN is too long (${data.pin.length} characters). Must be ${maxLength} characters or less.`);
+      setError(
+        `PIN is too long (${data.pin.length} characters). Must be ${maxLength} characters or less.`
+      );
       return;
     }
     if (data.confirm_pin.length > maxLength) {
-      setError(`Confirm PIN is too long (${data.confirm_pin.length} characters). Must be ${maxLength} characters or less.`);
+      setError(
+        `Confirm PIN is too long (${data.confirm_pin.length} characters). Must be ${maxLength} characters or less.`
+      );
       return;
     }
-    // Optionally check password if it’s stored in a VARCHAR(4) column
-    if (data.password.length > maxLength) {
-      setError(`Password is too long (${data.password.length} characters). Must be ${maxLength} characters or less.`);
-      return;
-    }
-
     setLoading(true);
     setError(null);
     try {
       await updatePin(data.password, data.pin, data.confirm_pin);
+      reset();
     } catch (error: any) {
-      console.error("UpdatePin error:", error);
-      // Customize error message based on database error
-      const errorMessage = error.message.includes("value too long for type character varying(4)")
+      toast.error("UpdatePin error:", error);
+
+      const errorMessage = error.message.includes(
+        "value too long for type character varying(4)"
+      )
         ? `Database error: One of the fields (likely PIN or Confirm PIN) exceeds 4 characters.`
         : error.message || "Failed to reset PIN. Please try again.";
       setError(errorMessage);

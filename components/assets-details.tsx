@@ -26,7 +26,6 @@ const AssetDetails = ({ id }: { id: string }) => {
     const fetchAsset = async () => {
       try {
         const data = await getAssetById(id);
-        console.log("Asset API response:", data);
         setAsset(data);
       } catch (err) {
         console.error(err);

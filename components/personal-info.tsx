@@ -29,11 +29,11 @@ const PersonalInfo: React.FC = () => {
 
   useEffect(() => {
     const token = Cookies.get("token");
-    console.log("Stored token:", token);
+    // console.log("Stored token:", token);
 
     if (token) {
       const decoded = decodeJWT(token);
-      console.log("Decoded token:", decoded);
+      // console.log("Decoded token:", decoded);
       setUser(decoded);
     }
   }, []);

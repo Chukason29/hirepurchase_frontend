@@ -14,11 +14,9 @@ export default function Navbar() {
 
   useEffect(() => {
     const token = Cookies.get("token");
-    console.log("Stored token:", token);
 
     if (token) {
       const decoded = decodeJWT(token);
-      console.log("Decoded token:", decoded);
       setUser(decoded);
     }
   }, []);

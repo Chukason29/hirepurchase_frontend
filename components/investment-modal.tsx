@@ -11,10 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 // import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  getInvestmentSummary,
-  setInvestment,
-} from "@/services/investments.service";
+import { getInvestmentSummary } from "@/services/investments.service";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -35,18 +32,17 @@ const InvestmentModal = ({
   // const router = useRouter();
 
   const [summaryLoading, setSummaryLoading] = useState(false); // for fetching summary
-  const [paymentLoading, setPaymentLoading] = useState(false); // for payment button
+  const [paymentLoading] = useState(false); // for payment button
 
   const [summary, setSummary] = useState<any>(null);
 
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     if (open) {
       const fetchSummary = async () => {
         setSummaryLoading(true);
         try {
-          console.log("Payload being sent:", { asset_id: assetId, amount });
           const data = await getInvestmentSummary(assetId, amount);
           if (data) {
             setSummary(data);
@@ -132,7 +128,9 @@ const InvestmentModal = ({
 
         <Button
           className="bg-green-600 hover:bg-green-500 cursor-pointer flex items-center justify-center gap-2"
-         onClick={() => router.push("https://invest.hirepurchase.ng/api/invest/set")}
+          onClick={() =>
+            router.push("https://invest.hirepurchase.ng/api/invest/set")
+          }
           disabled={paymentLoading}
         >
           {paymentLoading ? (

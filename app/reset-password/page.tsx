@@ -37,6 +37,18 @@ export default function ResetPassword() {
     mode: "onChange",
   });
 
+  const onSubmit = async (data: ResetPasswordSchema) => {
+    setLoading(true);
+    try {
+      await resetPassword(data);
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {/* Logo header */}

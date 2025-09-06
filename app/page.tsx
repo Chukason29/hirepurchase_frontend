@@ -28,7 +28,6 @@ export default function RegisterPage() {
   const router = useRouter();
 
   const onSubmit = async (data: RegisterSchema) => {
-    console.log("Submitting:", data);
     setLoading(true);
     try {
       await registerUser(data);

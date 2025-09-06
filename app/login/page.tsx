@@ -26,7 +26,6 @@ export default function Login() {
   const router = useRouter();
 
   const onSubmit = async (data: LoginSchema) => {
-    console.log("Submitting:", data);
     setLoading(true);
     try {
       await loginUser(data);

@@ -24,10 +24,9 @@ export default function VerifyEmail() {
   const router = useRouter();
 
   const onSubmit = async (data: OtpSchema) => {
-    console.log("Submitting:", data);
     setLoading(true);
     try {
-      await forgotPasswordOtp(data);
+      await forgotPasswordOtp(data.otp);
       router.push("/reset-password");
     } catch (error) {
       console.error(error);

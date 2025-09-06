@@ -24,7 +24,6 @@ const CreatePin = () => {
   // const router = useRouter();
 
   const onSubmit = async (data: CreatePinSchema) => {
-    console.log("Submitting:", data);
     setLoading(true);
     try {
       await createPin(data.pin);
