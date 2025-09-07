@@ -23,8 +23,8 @@ interface ApiResponse {
 }
 
 export const getAssets = async (
-  page: number = 1,
-  limit: number = 2
+  page: number,
+  limit: number
 ): Promise<ApiResponse> => {
   try {
     const response = await hirePurchaseApi.post<ApiResponse>(

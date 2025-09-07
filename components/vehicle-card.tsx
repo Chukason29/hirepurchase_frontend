@@ -33,7 +33,7 @@ const VehicleCard = () => {
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const response = await getAssets(1, 2);
+        const response = await getAssets(0,0);
 
         if (response.status === "success") {
           const mappedAssets: Asset[] = response.data.map((asset: any) => ({
