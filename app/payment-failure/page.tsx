@@ -1,0 +1,67 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { XCircle } from "lucide-react";
+import Link from "next/link";
+
+export default function PaymentFailurePage() {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="w-full max-w-md"
+      >
+        <Card className="shadow-lg border-0 rounded-2xl bg-white">
+          <CardHeader className="flex flex-col items-center gap-2">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 10 }}
+              className="rounded-full bg-red-100 p-3"
+            >
+              <XCircle className="h-12 w-12 text-red-500" />
+            </motion.div>
+            <CardTitle className="text-2xl font-bold text-gray-800">
+              Payment Failed
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <p className="text-gray-600">
+              Unfortunately, your investment could not be
+              processed ❌
+            </p>
+            <p className="text-gray-500 text-sm">
+              Please check your payment details and try again. If the issue
+              persists, contact support.
+            </p>
+            <div className="flex flex-col gap-3 mt-4">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                  asChild
+                  className="w-full bg-red-600 hover:bg-red-500 text-white"
+                >
+                  <Link href="/assets">Try Again</Link>
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button asChild variant="outline" className="w-full">
+                  <Link href="/overview">Back to Dashboard</Link>
+                </Button>
+              </motion.div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  );
+}

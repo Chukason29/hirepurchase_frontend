@@ -160,7 +160,7 @@ const AssetDetails = ({ id }: { id: string }) => {
               </Button>
             </Card>
             {/* Investment Modal */}
-            {open && numericAmount <= Number(asset.minimum_amount) && (
+            {open && numericAmount >= Number(asset.minimum_amount) && (
               <InvestmentModal
                 open={open}
                 onOpenChange={setOpen}

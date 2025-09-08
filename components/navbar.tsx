@@ -7,6 +7,7 @@ import Image from "next/image";
 // import { useAuthStore } from "@/store/authStore";
 import { type DecodedToken, decodeJWT } from "@/utils/jwt";
 import Cookies from "js-cookie";
+import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   const [user, setUser] = useState<DecodedToken | null>(null);
@@ -35,7 +36,7 @@ export default function Navbar() {
           <Image
             src="https://res.cloudinary.com/djjqicpga/image/upload/v1756282560/hire-purchase-logo_rih8e5.png"
             alt="Hire purchase Logo"
-            width={150}
+            width={50}
             height={40}
           />
         </div>
@@ -51,6 +52,16 @@ export default function Navbar() {
               {notifications}
             </span>
           )}
+        </div>
+
+        {/* verification status */}
+        <div className="w-full sm:w-auto">
+          <Button
+            variant="secondary"
+            className="w-full sm:w-auto bg-gray-200 text-gray-700 text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3"
+          >
+            Not Verified
+          </Button>
         </div>
 
         {/* User profile */}
