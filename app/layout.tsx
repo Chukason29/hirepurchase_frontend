@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
 import ProtectedRoute from "@/components/protected-route";
+import ChunkErrorHandler from "@/components/chunk-error-handler";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster richColors position="top-center" />
+        <ChunkErrorHandler />
         <ProtectedRoute>
           <main>{children}</main>
         </ProtectedRoute>
