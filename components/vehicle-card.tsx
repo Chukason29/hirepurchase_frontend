@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
+
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-// import { Button } from "@/components/ui/button";
-// import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAssets } from "@/services/assets.service";
@@ -29,11 +27,12 @@ const VehicleCard = () => {
   const router = useRouter();
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
+  const [navigating, setNavigating] = useState(false);
 
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const response = await getAssets(0,0);
+        const response = await getAssets(0, 0);
 
         if (response.status === "success") {
           const mappedAssets: Asset[] = response.data.map((asset: any) => ({
@@ -65,6 +64,12 @@ const VehicleCard = () => {
     fetchAssets();
   }, []);
 
+  // ✅ Show spinner during page navigation
+  const handleCardClick = (id: string) => {
+    setNavigating(true);
+    router.push(`/assets/${id}`);
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8 text-center flex justify-center items-center h-64">
@@ -94,11 +99,27 @@ const VehicleCard = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="container mx-auto px-4 py-8"
+      className="container mx-auto px-4 py-8 relative"
     >
       <h2 className="text-3xl font-extrabold text-black mb-6 text-center">
         Assets
       </h2>
+
+      {/* ✅ Navigation Loader Overlay */}
+      {navigating && (
+        <div className="absolute inset-0 bg-white/70 flex justify-center items-center z-50">
+          <motion.div
+            className="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{
+              repeat: Infinity,
+              duration: 1,
+              ease: "linear",
+            }}
+          />
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {assets.map((asset, index) => (
           <motion.div
@@ -109,7 +130,7 @@ const VehicleCard = () => {
           >
             <Card
               className="bg-white shadow-2xl hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
-              onClick={() => router.push(`/assets/${asset.id}`)}
+              onClick={() => handleCardClick(asset.id)}
             >
               <CardContent className="p-4 flex flex-col items-center text-center">
                 <Image
@@ -124,7 +145,6 @@ const VehicleCard = () => {
                 </h3>
                 <p className="text-lg font-bold text-green-600">
                   <span className="text-lg font-bold text-gray-800">
-                    {" "}
                     Minimum Investment Amount:
                   </span>{" "}
                   ₦{asset.minimum_amount.toLocaleString()}
@@ -140,6 +160,7 @@ const VehicleCard = () => {
           </motion.div>
         ))}
       </div>
+
       <div className="flex justify-end mt-10">
         <ActionButton
           text="View More"

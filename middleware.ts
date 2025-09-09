@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const unguardedRoutes = ["/", "/login", "/otp", "/forgot-password", "/forgot-password/otp"];
+const unguardedRoutes = ["/", "/login", "/otp", "/forgot-password", "/forgot-password/otp", "/reset-password"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

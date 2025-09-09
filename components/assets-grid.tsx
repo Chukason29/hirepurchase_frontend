@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,11 +25,12 @@ const AssetsGrid = () => {
   const router = useRouter();
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
+  const [navigating, setNavigating] = useState(false);
 
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const response = await getAssets(0,0);
+        const response = await getAssets(0, 0);
 
         if (response.status === "success") {
           const mappedAssets: Asset[] = response.data.map((asset: any) => ({
@@ -61,6 +61,12 @@ const AssetsGrid = () => {
     fetchAssets();
   }, []);
 
+  // ✅ Navigation handler with spinner
+  const handleCardClick = (id: string) => {
+    setNavigating(true);
+    router.push(`/assets/${id}`);
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8 text-center flex justify-center items-center h-64">
@@ -90,11 +96,27 @@ const AssetsGrid = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="container mx-auto px-4 py-8"
+      className="container mx-auto px-4 py-8 relative"
     >
       <h2 className="text-3xl font-extrabold text-black mb-6 text-center">
         Assets
       </h2>
+
+      {/* ✅ Navigation overlay */}
+      {navigating && (
+        <div className="absolute inset-0 bg-white/70 flex justify-center items-center z-50">
+          <motion.div
+            className="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{
+              repeat: Infinity,
+              duration: 1,
+              ease: "linear",
+            }}
+          />
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {assets.map((asset, index) => (
           <motion.div
@@ -105,7 +127,7 @@ const AssetsGrid = () => {
           >
             <Card
               className="bg-white shadow-2xl hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
-              onClick={() => router.push(`/assets/${asset.id}`)}
+              onClick={() => handleCardClick(asset.id)}
             >
               <CardContent className="p-4 flex flex-col items-center text-center">
                 <Image
@@ -120,7 +142,6 @@ const AssetsGrid = () => {
                 </h3>
                 <p className="text-lg font-bold text-green-600">
                   <span className="text-lg font-bold text-gray-800">
-                    {" "}
                     Minimum Investment Amount:
                   </span>{" "}
                   ₦{asset.min_amount.toLocaleString()}
@@ -129,7 +150,7 @@ const AssetsGrid = () => {
                   <span className="text-lg font-bold text-gray-800">
                     ROI Percentage:
                   </span>{" "}
-                  {asset.vat_charge}%
+                  {asset.percentage}%
                 </p>
               </CardContent>
             </Card>

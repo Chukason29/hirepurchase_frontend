@@ -8,6 +8,7 @@ import Link from "next/link";
 
 export default function PaymentSuccessPage() {
   return (
+    
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}

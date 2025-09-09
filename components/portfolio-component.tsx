@@ -2,11 +2,34 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-// import { Button } from "@/components/ui/button";
+import ActiveInvestmentsTable from "@/components/active-investment-table";
+import CompletedInvestmentsTable from "@/components/completed-investment-table";
 
 const PortfolioComponent = () => {
   const [isActive, setIsActive] = useState(true);
-  // const [isIndividual, setIsIndividual] = useState(true);
+
+  // Mock investment data
+  const activeData = [
+    {
+      id: "1",
+      name: "Real Estate Fund",
+      code: "INV-001",
+      status: "Active",
+      amount: "₦500,000",
+      roi: "12%",
+    },
+  ];
+
+  const completedData = [
+    {
+      id: "2",
+      name: "Tech Startup Seed",
+      code: "INV-002",
+      status: "Completed",
+      amount: "₦300,000",
+      roi: "15%",
+    },
+  ];
 
   return (
     <div className="min-h-screen text-gray-700 p-6">
@@ -35,42 +58,14 @@ const PortfolioComponent = () => {
           Completed Investments
         </motion.button>
       </div>
-      <div className="flex justify-center gap-4 mb-4">
-        {/* <Button
-          variant="outline"
-          onClick={() => setIsIndividual(true)}
-          className={`bg-gray-800 text-yellow-400 border-yellow-400 hover:bg-yellow-400 hover:text-black cursor-pointer ${
-            isIndividual ? "bg-yellow-400 text-black" : ""
-          }`}
-        >
-          Individual
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setIsIndividual(false)}
-          className={`bg-gray-800 text-yellow-400 border-yellow-400 hover:bg-yellow-400 hover:text-black cursor-pointer ${
-            !isIndividual ? "bg-yellow-400 text-black" : ""
-          }`}
-        >
-          Clique
-        </Button> */}
-      </div>
+
       {isActive ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center text-gray-400"
-        >
-          No active individual investments found.
-        </motion.div>
+        <ActiveInvestmentsTable
+          data={activeData}
+          onWithdraw={(id) => console.log("Withdraw from:", id)}
+        />
       ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center text-gray-400"
-        >
-          No completed individual investments found.
-        </motion.div>
+        <CompletedInvestmentsTable data={completedData} />
       )}
     </div>
   );

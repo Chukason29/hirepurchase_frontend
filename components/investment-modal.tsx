@@ -6,15 +6,14 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  // DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-// import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getInvestmentSummary } from "@/services/investments.service";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface InvestmentModalProps {
   open: boolean;
@@ -29,14 +28,12 @@ const InvestmentModal = ({
   assetId,
   amount,
 }: InvestmentModalProps) => {
-  // const router = useRouter();
-
-  const [summaryLoading, setSummaryLoading] = useState(false); // for fetching summary
-  const [paymentLoading] = useState(false); // for payment button
-
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
   const [summary, setSummary] = useState<any>(null);
 
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (open) {
@@ -63,6 +60,18 @@ const InvestmentModal = ({
     }
   }, [open, assetId, amount]);
 
+  // 🔹 Reset payment loading when route changes
+  useEffect(() => {
+    if (paymentLoading) {
+      setPaymentLoading(false);
+    }
+  }, [pathname, paymentLoading]);
+
+  const handleProceed = () => {
+    setPaymentLoading(true);
+    router.push("https://invest.hirepurchase.ng/api/invest/set");
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-gray-900 text-white rounded-lg">
@@ -74,35 +83,19 @@ const InvestmentModal = ({
 
         {summaryLoading ? (
           <div className="flex flex-row justify-center mb-10 items-center gap-1">
-            <motion.span
-              className="w-2 h-2 bg-white rounded-full"
-              animate={{ y: [0, -6, 0] }}
-              transition={{
-                duration: 0.6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-            <motion.span
-              className="w-2 h-2 bg-white rounded-full"
-              animate={{ y: [0, -6, 0] }}
-              transition={{
-                duration: 0.6,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.2,
-              }}
-            />
-            <motion.span
-              className="w-2 h-2 bg-white rounded-full"
-              animate={{ y: [0, -6, 0] }}
-              transition={{
-                duration: 0.6,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.4,
-              }}
-            />
+            {Array.from({ length: 3 }).map((_, i) => (
+              <motion.span
+                key={i}
+                className="w-2 h-2 bg-white rounded-full"
+                animate={{ y: [0, -6, 0] }}
+                transition={{
+                  duration: 0.6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.2,
+                }}
+              />
+            ))}
           </div>
         ) : summary ? (
           <div className="space-y-3 text-gray-300">
@@ -128,42 +121,24 @@ const InvestmentModal = ({
 
         <Button
           className="bg-green-600 hover:bg-green-500 cursor-pointer flex items-center justify-center gap-2"
-          onClick={() =>
-            router.push("https://invest.hirepurchase.ng/api/invest/set")
-          }
+          onClick={handleProceed}
           disabled={paymentLoading}
         >
           {paymentLoading ? (
             <div className="flex items-center gap-1">
-              <motion.span
-                className="w-2 h-2 bg-white rounded-full"
-                animate={{ y: [0, -6, 0] }}
-                transition={{
-                  duration: 0.6,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-              <motion.span
-                className="w-2 h-2 bg-white rounded-full"
-                animate={{ y: [0, -6, 0] }}
-                transition={{
-                  duration: 0.6,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.2,
-                }}
-              />
-              <motion.span
-                className="w-2 h-2 bg-white rounded-full"
-                animate={{ y: [0, -6, 0] }}
-                transition={{
-                  duration: 0.6,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.4,
-                }}
-              />
+              {Array.from({ length: 3 }).map((_, i) => (
+                <motion.span
+                  key={i}
+                  className="w-2 h-2 bg-white rounded-full"
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{
+                    duration: 0.6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: i * 0.2,
+                  }}
+                />
+              ))}
             </div>
           ) : (
             "Proceed to Payment"

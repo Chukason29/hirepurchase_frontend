@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useTransition, useEffect } from "react";
 import {
   LayoutDashboard,
   ArrowRightCircle,
@@ -12,11 +11,11 @@ import {
   FileText,
   Menu,
   X,
+  Loader2,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
-// import { toast } from "sonner";
 import { logoutUser } from "@/services/auth.service";
 
 const navLinks = [
@@ -32,8 +31,10 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingLink, setLoadingLink] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const handleConfirmLogout = async () => {
     setLoading(true);
@@ -47,6 +48,20 @@ export default function Sidebar() {
       setShowModal(false);
     }
   };
+
+  const handleNavigation = (href: string) => {
+    setLoadingLink(href);
+    startTransition(() => {
+      router.push(href);
+    });
+  };
+
+  // Reset loading state once navigation finishes
+  useEffect(() => {
+    if (!isPending) {
+      setLoadingLink(null);
+    }
+  }, [isPending]);
 
   return (
     <>
@@ -92,13 +107,12 @@ export default function Sidebar() {
               const isActive =
                 pathname === link.href || pathname.startsWith(`${link.href}/`);
 
-              // ✅ Handle Logout with modal
               if (link.isLogout) {
                 return (
                   <button
                     key={link.name}
                     onClick={() => setShowModal(true)}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition w-full text-left text-red-500 hover:bg-red-600 hover:text-white`}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition w-full text-left text-red-500 hover:bg-red-600 hover:text-white"
                   >
                     <Icon size={18} />
                     {link.name}
@@ -106,20 +120,23 @@ export default function Sidebar() {
                 );
               }
 
-              // ✅ Normal Links
               return (
-                <Link
+                <button
                   key={link.name}
-                  href={link.href}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition ${
+                  onClick={() => handleNavigation(link.href)}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition w-full text-left ${
                     isActive
                       ? "bg-yellow-400 text-black"
                       : "hover:bg-neutral-800 text-gray-200"
                   }`}
                 >
-                  <Icon size={18} />
+                  {loadingLink === link.href ? (
+                    <Loader2 className="animate-spin" size={18} />
+                  ) : (
+                    <Icon size={18} />
+                  )}
                   {link.name}
-                </Link>
+                </button>
               );
             })}
           </nav>
@@ -144,7 +161,7 @@ export default function Sidebar() {
         </div>
       </motion.aside>
 
-      {/* ✅ Logout Confirmation Modal */}
+      {/* Logout Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/30 z-50">
           <div className="bg-white text-black rounded-lg shadow-lg p-6 w-96 text-center">

@@ -9,7 +9,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react";
 import { type DecodedToken, decodeJWT } from "@/utils/jwt";
 import Cookies from "js-cookie";
-import ReferralButtons from "@/components/referral-buttons";
+import AccountsTable from "@/components/common/account-table";
 
 // interface PersonalInfoProps {}
 
@@ -98,27 +98,28 @@ const PersonalInfo: React.FC = () => {
         </div>
       </div>
 
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <h3 className="font-semibold">Your Referral Code</h3>
         <p className="bg-green-100 text-green-800 p-2 rounded">chuk027c</p>
         <div className="flex space-x-4">
           <ReferralButtons code={user?.name || "chuk2341"} />
         </div>
-      </div>
+      </div> */}
 
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <h3 className="font-semibold">Referral Bonus</h3>
         <p>No referral bonuses yet.</p>
-      </div>
+      </div> */}
 
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <h3 className="font-semibold">Verification Status</h3>
         <Button variant="secondary" className="bg-gray-200 text-gray-700">
           Not Verified
         </Button>
-      </div>
+      </div> */}
 
-      <Button className="bg-yellow-400 text-black">Withdraw</Button>
+      {/* <Button className="bg-yellow-400 text-black">Withdraw</Button> */}
+      <AccountsTable />
     </div>
   );
 };
