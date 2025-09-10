@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,15 +11,21 @@ import Image from "next/image";
 import InvestmentModal from "@/components/investment-modal";
 import { toast } from "sonner";
 
+const formatCurrency = (value: string) => {
+  if (!value) return "";
+  const numberValue = value.replace(/\D/g, ""); // remove non-numeric
+  if (!numberValue) return "";
+  return Number(numberValue).toLocaleString("en-NG"); // add comma delimiters
+};
+
 const AssetDetails = ({ id }: { id: string }) => {
-  // const router = useRouter();
   const [asset, setAsset] = useState<Asset | null>(null);
   const [loading, setLoading] = useState(true);
-  const [amount, setAmount] = useState<string>("");
+  const [amount, setAmount] = useState<string>(""); // formatted string
   const [open, setOpen] = useState(false);
 
-  const numericAmount = Number(amount) || 0;
-  // const profit = (numericAmount * profitRate) / 100;
+  // raw numeric amount
+  const numericAmount = Number(amount.replace(/,/g, "")) || 0;
 
   useEffect(() => {
     const fetchAsset = async () => {
@@ -135,9 +140,12 @@ const AssetDetails = ({ id }: { id: string }) => {
                   Enter Investment Amount
                 </label>
                 <Input
-                  type="number"
+                  type="text"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => {
+                    const formatted = formatCurrency(e.target.value);
+                    setAmount(formatted);
+                  }}
                   placeholder="Enter amount"
                   className="bg-gray-700 text-white"
                 />
@@ -168,7 +176,6 @@ const AssetDetails = ({ id }: { id: string }) => {
                 amount={numericAmount}
               />
             )}
-           
           </motion.div>
         </div>
 
