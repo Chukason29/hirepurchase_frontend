@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import DashboardLayout from "@/components/dashboard-layout";
 import DateFilter from "@/components/data-filter";
 import TransactionsTable from "@/components/transactions-table";
-import { isAfter, isBefore } from "date-fns";
+import { isAfter, isBefore, parse } from "date-fns";
 
 interface Transaction {
   date: string; // format: dd/MM/yyyy
@@ -41,16 +41,25 @@ const mockTransactions: Transaction[] = [
   // Add more mock data as needed
 ];
 
-const TransactionsPage = () => {
+const WithdrawalsPage = () => {
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
   const [toDate, setToDate] = useState<Date | undefined>(undefined);
   const [transactionType, setTransactionType] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const handleClear = () => {
+    setFromDate(undefined);
+    setToDate(undefined);
+    setTransactionType("all");
+  };
+  
+
   const filteredTransactions = mockTransactions.filter((tx) => {
+    // Parse tx.date into a Date object
+    const txDate = parse(tx.date, "dd/MM/yyyy", new Date());
+
     let matchesDate = true;
-    const txDate = (tx.date, "dd/MM/yyyy", new Date());
 
     if (fromDate) {
       matchesDate =
@@ -64,7 +73,8 @@ const TransactionsPage = () => {
     }
 
     const matchesType =
-      transactionType === "all" || tx.type.toLowerCase() === transactionType;
+      transactionType === "all" ||
+      tx.type.toLowerCase() === transactionType.toLowerCase();
 
     return matchesDate && matchesType;
   });
@@ -84,6 +94,7 @@ const TransactionsPage = () => {
           setFromDate={setFromDate}
           setToDate={setToDate}
           transactionType={transactionType}
+          onClear={handleClear}
           setTransactionType={setTransactionType}
         />
         <TransactionsTable
@@ -98,4 +109,4 @@ const TransactionsPage = () => {
   );
 };
 
-export default TransactionsPage;
+export default WithdrawalsPage;
