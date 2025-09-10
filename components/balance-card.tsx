@@ -23,21 +23,21 @@ export default function BalanceCard() {
     const fetchData = async () => {
       try {
         const invested = await totalAmountInvested();
-        setAmountInvested(invested?.amount || "₦0.00");
+        setAmountInvested(invested?.total_amount ?? "0");
 
         const active = await totalActiveInvestments();
-        setActiveInvestments(active?.total || "0");
+        setActiveInvestments(active?.investment_count ?? "0");
 
         const returns = await returnOnActiveInvestments();
-        setRoi(returns?.amount || "₦0.00");
+        setRoi(returns?.total_returns ?? "0");
       } catch (error) {
         toast.error("Error loading balances");
-        console.error(error)
+        console.error(error);
       }
     };
 
     fetchData();
-  }, []);
+  }, []); 
 
   return (
     <motion.div
@@ -74,7 +74,7 @@ export default function BalanceCard() {
             transition={{ duration: 0.3 }}
             className="text-xl font-bold tracking-wide"
           >
-            {showBalance ? activeInvestments : "*****"}
+            ₦ {showBalance ? activeInvestments : "*****"}
           </motion.p>
         </div>
 
@@ -88,7 +88,7 @@ export default function BalanceCard() {
             transition={{ duration: 0.3 }}
             className="text-xl font-bold tracking-wide"
           >
-            {showBalance ? roi : "*****"}
+           ₦ {showBalance ? roi : "*****"}
           </motion.p>
         </div>
       </div>
