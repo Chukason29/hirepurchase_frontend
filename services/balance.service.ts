@@ -9,7 +9,7 @@ export const totalAmountInvested = async () => {
       getAuthHeader()
     );
 
-    toast.success(response.data.message || "Amount retrieved successfully");
+    // toast.success(response.data.message || "Amount retrieved successfully");
     return response.data; // { amount, message }
   } catch (error: any) {
     toast.error(error.response?.data?.message || "Error retrieving amount");
@@ -24,9 +24,9 @@ export const totalActiveInvestments = async () => {
       getAuthHeader()
     );
 
-    toast.success(
-      response.data.message || "Active investments retrieved successfully"
-    );
+    // toast.success(
+    //   response.data.message || "Active investments retrieved successfully"
+    // );
     return response.data; // { total, message }
   } catch (error: any) {
     toast.error(
@@ -43,7 +43,7 @@ export const returnOnActiveInvestments = async () => {
       getAuthHeader()
     );
 
-    toast.success(response.data.message || "Return retrieved successfully");
+    // toast.success(response.data.message || "Return retrieved successfully");
     return response.data; // { amount, message }
   } catch (error: any) {
     toast.error(error.response?.data?.message || "Error retrieving return");

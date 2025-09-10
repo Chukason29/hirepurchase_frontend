@@ -108,7 +108,7 @@ const InvestmentModal = ({
               {summary.expected_returns.toLocaleString()}
             </p>
             <p>
-              <strong>Duration:</strong> {summary["investment duration"]} weeks
+              <strong>Duration:</strong> {summary["investment duration"]} months
             </p>
             <p>
               <strong>Expected Return Date:</strong>{" "}

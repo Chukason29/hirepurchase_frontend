@@ -60,7 +60,7 @@ export default function Navbar() {
             variant="secondary"
             className="w-full sm:w-auto bg-gray-200 text-gray-700 text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3"
           >
-            Not Verified
+            Verified
           </Button>
         </div>
 

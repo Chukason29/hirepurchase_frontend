@@ -60,7 +60,7 @@ export default function BalanceCard() {
             transition={{ duration: 0.3 }}
             className="text-xl font-bold tracking-wide"
           >
-            {showBalance ? amountInvested : "*****"}
+           ₦ {showBalance ? amountInvested : "*****"}
           </motion.p>
         </div>
 
@@ -74,7 +74,7 @@ export default function BalanceCard() {
             transition={{ duration: 0.3 }}
             className="text-xl font-bold tracking-wide"
           >
-            ₦ {showBalance ? activeInvestments : "*****"}
+             {showBalance ? activeInvestments : "*****"}
           </motion.p>
         </div>
 

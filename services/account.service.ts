@@ -55,7 +55,8 @@ export const accountUpdate = async (
   try {
     const { data } = await hirePurchaseApi.put<SetAccountResponse>(
       "/api/account/update",
-      payload
+      payload,
+      getAuthHeader()
     );
 
     return data; // ⬅️ this ensures we return the response

@@ -89,7 +89,7 @@ const CheckPinModal = ({ isOpen, onClose, onSuccess }: CheckPinModalProps) => {
                 ref={(el) => {
                   inputsRef.current[i] = el;
                 }}
-                type="text"
+                type="password"
                 inputMode="numeric"
                 maxLength={1}
                 value={digit}

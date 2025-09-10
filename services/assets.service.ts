@@ -37,7 +37,7 @@ export const getAssets = async (
     );
 
     if (response.data.status === "success") {
-      toast.success("Assets fetched successfully");
+      // toast.success("Assets fetched successfully");
       return response.data;
     } else {
       toast.error(response.data?.message || "Failed to fetch assets");
@@ -75,7 +75,7 @@ export const getAssetById = async (asset_id: string): Promise<Asset | null> => {
     );
 
     return response.data;
-    toast.success("Asset fetched successfully");
+    // toast.success("Asset fetched successfully");
   } catch (error) {
     console.error("Error fetching asset details:", error);
     toast.error("Error fetching asset details");

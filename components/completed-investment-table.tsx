@@ -12,11 +12,14 @@ import {
 
 interface Investment {
   id: string;
-  name: string;
-  code: string;
-  status: string;
-  amount: string;
-  roi: string;
+  asset_name: string;
+  investment_amount: string;
+  investment_code: string;
+  returns: string;
+  withdrawn_amount: string;
+  roi_date: string;
+  maturity: string;
+  available_returns: number;
 }
 
 interface CompletedInvestmentsTableProps {
@@ -36,27 +39,35 @@ const CompletedInvestmentsTable: React.FC<CompletedInvestmentsTableProps> = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
+            <TableHead>Asset Name</TableHead>
             <TableHead>Investment Code</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>ROI</TableHead>
+            <TableHead>Maturity</TableHead>
+            <TableHead>Investment Amount</TableHead>
+            <TableHead>Returns</TableHead>
+            <TableHead>ROI Date</TableHead>
+            <TableHead>Withdrawn Amount</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.length > 0 ? (
             data.map((inv) => (
               <TableRow key={inv.id}>
-                <TableCell>{inv.name}</TableCell>
-                <TableCell>{inv.code}</TableCell>
-                <TableCell>{inv.status}</TableCell>
-                <TableCell>{inv.amount}</TableCell>
-                <TableCell>{inv.roi}</TableCell>
+                <TableCell>{inv.asset_name}</TableCell>
+                <TableCell>{inv.investment_code}</TableCell>
+                <TableCell>{inv.maturity}</TableCell>
+                <TableCell>
+                  ₦{Number(inv.investment_amount).toLocaleString()}
+                </TableCell>
+                <TableCell>₦{Number(inv.returns).toLocaleString()}</TableCell>
+                <TableCell>{inv.roi_date}</TableCell>
+                <TableCell>
+                  ₦{Number(inv.withdrawn_amount).toLocaleString()}
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} className="text-center text-gray-400">
+              <TableCell colSpan={7} className="text-center text-gray-400">
                 No completed investments found.
               </TableCell>
             </TableRow>
