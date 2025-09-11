@@ -17,7 +17,9 @@ interface DateFilterProps {
   setFromDate: (date: Date | undefined) => void;
   setToDate: (date: Date | undefined) => void;
   onClear: () => void;
-  onSubmit: () => void;
+  // onSubmit: () => void;
+  transactionType?: string;
+  setTransactionType: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const DateFilter = ({
@@ -26,7 +28,7 @@ const DateFilter = ({
   setFromDate,
   setToDate,
   onClear,
-  onSubmit,
+  // onSubmit,
 }: DateFilterProps) => {
   return (
     <motion.div
