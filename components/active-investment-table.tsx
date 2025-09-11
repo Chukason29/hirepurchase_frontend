@@ -9,33 +9,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { withdrawInvestment } from "@/services/investments.service";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Investment {
   id: string;
   asset_name: string;
   investment_code: string;
-  maturity: string;
+  maturity: string; // e.g., "not due" or "due"
   investment_amount: string;
   returns: string;
 }
 
 interface ActiveInvestmentsTableProps {
   data: Investment[];
-  onWithdraw: (id: string) => void;
+  onWithdraw: (id: string, returns: string) => void; // parent handles modal + API
 }
 
 const ActiveInvestmentsTable: React.FC<ActiveInvestmentsTableProps> = ({
   data,
   onWithdraw,
 }) => {
-  const handleWithdraw = async (id: string) => {
-    const result = await withdrawInvestment("id", 2, "89");
-    if (result) {
-      onWithdraw(id); // let parent update state
-    }
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -56,25 +54,46 @@ const ActiveInvestmentsTable: React.FC<ActiveInvestmentsTableProps> = ({
         </TableHeader>
         <TableBody>
           {data.length > 0 ? (
-            data.map((inv) => (
-              <TableRow key={inv.id}>
-                <TableCell>{inv.asset_name}</TableCell>
-                <TableCell>{inv.investment_code}</TableCell>
-                <TableCell>{inv.maturity}</TableCell>
-                <TableCell>₦{inv.investment_amount}</TableCell>
-                <TableCell>₦{inv.returns}</TableCell>
-                <TableCell>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => handleWithdraw(inv.id)}
-                    className="px-4 py-2 rounded-lg bg-yellow-400 text-black hover:bg-yellow-500"
-                  >
-                    Withdraw
-                  </motion.button>
-                </TableCell>
-              </TableRow>
-            ))
+            data.map((inv) => {
+              const isNotDue = inv.maturity.toLowerCase() === "not due";
+              return (
+                <TableRow key={inv.id}>
+                  <TableCell>{inv.asset_name}</TableCell>
+                  <TableCell>{inv.investment_code}</TableCell>
+                  <TableCell>{inv.maturity}</TableCell>
+                  <TableCell>₦{inv.investment_amount}</TableCell>
+                  <TableCell>₦{inv.returns}</TableCell>
+                  <TableCell>
+                    {isNotDue ? (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <motion.button
+                              disabled
+                              className="px-4 py-2 rounded-lg bg-gray-300 text-gray-600 cursor-not-allowed"
+                            >
+                              Withdraw
+                            </motion.button>
+                          </TooltipTrigger>
+                          <TooltipContent className="z-50 bg-gray-300 text-gray-900 font-bold text-lg px-4 py-2 rounded shadow-lg">
+                            Investment isn&apos;t mature yet
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ) : (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => onWithdraw(inv.id, inv.returns)}
+                        className="px-4 py-2 rounded-lg bg-yellow-400 text-black hover:bg-yellow-500"
+                      >
+                        Withdraw
+                      </motion.button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })
           ) : (
             <TableRow>
               <TableCell colSpan={6} className="text-center text-gray-400">

@@ -130,20 +130,26 @@ export const withdrawInvestment = async (
   investment_id: string
 ) => {
   try {
-    const response = await hirePurchaseApi.post("/api/investments/withdrawal", {
-      ...getAuthHeader(),
-      params: { otp, amount, investment_id },
-    });
+    const response = await hirePurchaseApi.post(
+      "/api/investments/withdrawal",
+      { otp, amount, investment_id }, 
+      getAuthHeader()
+    );
 
     if (response.data.status === "success") {
       toast.success("Withdrawal successful!");
       return response.data;
     } else {
-      toast.error(response.data.message || "Withdrawal failed");
-      return null;
+      // backend returned a structured error
+      const msg = response.data.message || "Withdrawal failed";
+      toast.error(msg);
+      throw new Error(msg);
     }
   } catch (error: any) {
-    toast.error(error.message || "Something went wrong during withdrawal");
-    return null;
+    const backendMessage =
+      error.response?.data?.message || error.message || "Something went wrong";
+
+    toast.error(backendMessage);
+    throw new Error(backendMessage); // ✅ let caller handle it too
   }
 };
