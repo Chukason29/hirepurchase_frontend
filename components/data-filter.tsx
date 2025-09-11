@@ -94,13 +94,13 @@ const DateFilter = ({
             />
           </PopoverContent>
         </Popover>
-
-        { <Button
+{/* 
+         <Button
           onClick={onSubmit}
           className="px-5 py-3 border border-cyan-300 cursor-pointer"
         >
           Submit
-        </Button> }
+        </Button>  */}
         <Button
           onClick={onClear}
           className="px-5 py-3 border border-cyan-300 cursor-pointer"
